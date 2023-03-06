@@ -1,3 +1,5 @@
+
+
 const canvas = document.querySelector('#canvas'),
       toolBtn = document.querySelectorAll('.tool'),
       fillColor = document.querySelector('#fillColor'),
@@ -40,19 +42,20 @@ window.addEventListener('load', () => {
   canvas.height = canvas.offsetHeight
   setCanvasBackground()
 })
+
 function setCanvasBackground() {
   //setting whole canvas background to white , so the downloaded img background will be white
   ctx.fillStyle = '#fff'
   ctx.fillRect(0, 0, canvas.width, canvas.height)
   ctx.fillStyle = selectedColor //setting fill style back to the selected Color ,it`ll be the brush color
+  
 }
 
 
+
 function handleMouseOut(e) {
-  let canMouseX = parseInt(e.clientX - offsetX)
-  let canMouseY = parseInt(e.clientY - offsetY)
   // user has left the canvas, so clear the drag flag
-  //isDragging=false;
+  isDragging=false;
 }
 
 const drawRect = (e) => {
@@ -101,8 +104,6 @@ const drawTriangle = (e) => {
 
 const startLeftClickOnCanvas = (e) => {
   if (isHand) {
-    let canMouseX = parseInt(e.clientX - offsetX)
-    let canMouseY = parseInt(e.clientY - offsetY)
     // set the drag flag
     isDragging = true
   } else {
@@ -169,8 +170,6 @@ const movingMouseOnCanvas = (e) => {
 
 const stopLeftClickOnCanvas = (e) => {
   if (isHand) {
-    let canMouseX = parseInt(e.clientX - offsetX)
-    let canMouseY = parseInt(e.clientY - offsetY)
     // clear the drag flag
     isDragging = false
     isHand = false
