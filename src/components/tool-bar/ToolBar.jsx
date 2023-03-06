@@ -3,27 +3,30 @@ import React from 'react'
 import styles from './ToolBar.module.css'
 
 const ToolBar = () => {
+
+
+
   return (
     <section className={styles.toolsBoard}>
       <div className={styles.row}>
         <label className={styles.title}>shapes</label>
         <ul className={styles.options}>
-          <li className={`${styles.option} ${styles.tool}  `} id="rectangle">
+          <li className={`${styles.option} ${styles.tool}`} id="rectangle">
             <img src="./icons/rectangle.svg" alt="" />
           </li>
-          <li className={`${styles.option} ${styles.tool}  `} id="circle">
+          <li className={`${styles.option} ${styles.tool}`} id="circle">
             <img src="./icons/circle.svg" alt="" />
           </li>
-          <li className={`${styles.option} ${styles.tool}  `} id="triangle">
+          <li className={`${styles.option} ${styles.tool}`} id="triangle">
             <img src="./icons/triangle.svg" alt="" />
           </li>
-          <li className={`${styles.option} ${styles.tool}  `} id="line">
+          <li className={`${styles.option} ${styles.tool}`} id="line">
             <img src="./icons/line.svg" alt="" />
           </li>
 
           <li className={styles.option}>
-            <input type="checkbox" id={styles.fillColor} />
-            <label htmlFor="fill-color">Fill</label>
+            <input type="checkbox" id='fillColor' className={styles.fillColor} />
+            <label htmlFor="fillColor">Fill</label>
           </li>
         </ul>
       </div>
@@ -49,7 +52,8 @@ const ToolBar = () => {
           <li className={styles.option} style={{display:'inline-inline'}}>
             <input
               type="range"
-              id={styles.sizeSlider}
+              className={styles.sizeSlider}
+              id='sizeSlider'
               min="1"
               max="15"
               defaultValue={2}
@@ -68,7 +72,8 @@ const ToolBar = () => {
           <li className={styles.option}>
             <input
               type="color"
-              id={styles.colorPicker}
+              className={styles.colorPicker}
+              id='colorPicker'
               defaultValue={'#4a98f7'}
             />
           </li>

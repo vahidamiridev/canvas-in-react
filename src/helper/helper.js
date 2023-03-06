@@ -1,4 +1,4 @@
-const canvas = document.querySelector('canvas'),
+const canvas = document.querySelector('#canvas'),
       toolBtn = document.querySelectorAll('.tool'),
       fillColor = document.querySelector('#fillColor'),
       sizeSlider = document.querySelector('#sizeSlider'),
@@ -10,6 +10,8 @@ const canvas = document.querySelector('canvas'),
       moveItem = document.querySelector('.moveItem'),
       inputImage = document.getElementById('inputImg'),
       ctx = canvas.getContext('2d')
+
+
 
 let prevMouseX,
     prevMouseY,
@@ -23,20 +25,14 @@ let prevMouseX,
     isHand = false
 
 let sizeOfImage = { width: 0, height: 0 }
-let canvasOffset = document.querySelector('#canvas').offset()
-let offsetX = canvasOffset.left
-let offsetY = canvasOffset.top
+let offsetX = canvas.offsetLeft
+let offsetY = canvas.offsetTop
 let canvasWidth = canvas.width
 let canvasHeight = canvas.height
 let isDragging = false
 let pictures = []
 
-const setCanvasBackground = () => {
-  //setting whole canvas background to white , so the downloaded img background will be white
-  ctx.fillStyle = '#fff'
-  ctx.fillRect(0, 0, canvas.width, canvas.height)
-  ctx.fillStyle = selectedColor //setting fill style back to the selected Color ,it`ll be the brush color
-}
+
 
 window.addEventListener('load', () => {
   //setting canvas width/height ..offsetwidth /height returns viewable width/height of an element
@@ -44,9 +40,12 @@ window.addEventListener('load', () => {
   canvas.height = canvas.offsetHeight
   setCanvasBackground()
 })
-
-
-
+function setCanvasBackground() {
+  //setting whole canvas background to white , so the downloaded img background will be white
+  ctx.fillStyle = '#fff'
+  ctx.fillRect(0, 0, canvas.width, canvas.height)
+  ctx.fillStyle = selectedColor //setting fill style back to the selected Color ,it`ll be the brush color
+}
 
 
 function handleMouseOut(e) {
