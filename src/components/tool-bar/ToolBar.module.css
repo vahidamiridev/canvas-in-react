@@ -4,27 +4,33 @@
   justify-content: start;
   align-items: center;
   background-color: #A8C0FF;
-  width: 180px;
-  padding: 15px 22px 0 0;
+  width: 70px;
   height: 100vh;
+  padding: 5px 0;
 
 }
 .toolsBoard .row{
-  margin-bottom: 10px;
+  margin-bottom: 5px;
+  text-align: center;
 
+}
+.row .title{
+  display: inline-block;
+  margin-bottom: 5px;
+  font-size: small;
 }
 .row .options{ 
     list-style: none;
-    margin:5px 0 0 5px ;
+    width: 60px;
+ 
 }
 
 .row .options .option{
-  display: flex;
-  justify-content: center;
+  max-width: 80px;
+  margin-bottom: 5.5px ;
+  text-align: center;
   cursor: pointer;
   align-items: center;
-  margin-bottom: 5px;
-  padding: 0 !important;
 }
 .option:is(:hover, .active) img{
   filter:invert(17%) sepia(90%) saturate(3000%) hue-rotate(900deg) brightness(100%) contrast(100%);
@@ -45,8 +51,8 @@
 }
 .option #sizeSlider{
   
-  width: 20%; 
-   height: 5px; 
+  width: 100%; 
+   height: 2.5px; 
    margin-top: 10px;
 
 }

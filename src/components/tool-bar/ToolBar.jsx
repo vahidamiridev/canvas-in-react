@@ -6,25 +6,19 @@ const ToolBar = () => {
   return (
     <section className={styles.toolsBoard}>
       <div className={styles.row}>
-        <label  className={styles.title}>
-          shapes
-        </label>
+        <label className={styles.title}>shapes</label>
         <ul className={styles.options}>
           <li className={`${styles.option} ${styles.tool}  `} id="rectangle">
             <img src="./icons/rectangle.svg" alt="" />
-            {/* <span>Rectangle</span>  */}
           </li>
           <li className={`${styles.option} ${styles.tool}  `} id="circle">
             <img src="./icons/circle.svg" alt="" />
-            {/* <span>Circle</span>  */}
           </li>
           <li className={`${styles.option} ${styles.tool}  `} id="triangle">
             <img src="./icons/triangle.svg" alt="" />
-            {/* <span>Triangle</span> */}
           </li>
           <li className={`${styles.option} ${styles.tool}  `} id="line">
             <img src="./icons/line.svg" alt="" />
-            {/* <span>Line</span>  */}
           </li>
 
           <li className={styles.option}>
@@ -34,38 +28,37 @@ const ToolBar = () => {
         </ul>
       </div>
       <div className={styles.row}>
-        <label  className={styles.title}>
-          Options
-        </label>
-        <ul  className={styles.options}>
+        <label className={styles.title}>Options</label>
+        <ul className={styles.options}>
           <li
             className={`${styles.option} ${styles.active} ${styles.tool}`}
             id="brush"
           >
             <img src="./icons/brush.svg" alt="" />
-            {/* <span>Brush</span>  */}
           </li>
           <li
             className={`${styles.option} ${styles.active} ${styles.tool}`}
             id="marker"
           >
             <img src="./icons/marker.svg" alt="" />
-            {/* <span>Brush</span>  */}
           </li>
           <li className={`${styles.option} ${styles.tool}`} id="eraser">
             <img src="./icons/eraser.svg" alt="" />
-            {/* <span>Eraser</span>  */}
           </li>
 
-          <li className={styles.option}>
-            <input type="range" id={styles.sizeSlider} min="1" max="15" defaultValue={2} />
+          <li className={styles.option} style={{display:'inline-inline'}}>
+            <input
+              type="range"
+              id={styles.sizeSlider}
+              min="1"
+              max="15"
+              defaultValue={2}
+            />
           </li>
         </ul>
       </div>
       <div className={`${styles.row} ${styles.colors}`}>
-        <label  className={styles.title}>
-          Colors
-        </label>
+        <label className={styles.title}>Colors</label>
         <ul className={styles.options}>
           <li className={styles.option}></li>
           <li className={`${styles.option} ${styles.selected} `}></li>
@@ -73,7 +66,11 @@ const ToolBar = () => {
           <li className={styles.option}></li>
 
           <li className={styles.option}>
-            <input type="color" id={styles.colorPicker} defaultValue={"#4a98f7"} />
+            <input
+              type="color"
+              id={styles.colorPicker}
+              defaultValue={'#4a98f7'}
+            />
           </li>
         </ul>
       </div>
@@ -88,8 +85,6 @@ const ToolBar = () => {
         <button>
           <img src="./icons/hand.svg" alt="" />
         </button>
-        {/* <button className="draw-again">Draw</button>  */}
-
         <label htmlFor="input-img" className={styles.labelInput}>
           <img src="./icons/pic.svg" alt="" />
         </label>
@@ -97,13 +92,12 @@ const ToolBar = () => {
           id="input-img"
           type="file"
           accept=".jpg, .jpeg, .png"
-          style={{display:"none"}} 
+          style={{ display: 'none' }}
         />
-        <button >
+        <button>
           <img src="./icons/download.svg" alt="" />
         </button>
       </div>
-    
     </section>
   )
 }
