@@ -265,6 +265,7 @@ sizeSlider.addEventListener('change', () => (brushWidth = sizeSlider.value)) //p
 clearCanvas.addEventListener('click', clearCanvasHandler)
 moveItem.addEventListener('click', () => (isHand = true))
 undoBtn.addEventListener('click', undoLast)
+
 canvas.addEventListener('mousedown', startLeftClickOnCanvas)
 canvas.addEventListener('mousemove', movingMouseOnCanvas)
 canvas.addEventListener('mouseup', stopLeftClickOnCanvas)
