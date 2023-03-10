@@ -11,8 +11,7 @@ const ToolBar = (props) => {
        undoLast,
        clearCanvasHandler,
        setIsHand,
-       setFillColor,
-       inputImageRef
+       setFillColor
       } = props
   return (
     <section className={styles.toolsBoard}>
@@ -127,7 +126,7 @@ const ToolBar = (props) => {
           </li>
         </ul>
       </div>
-      <div className={`${styles.row} ${styles.buttons}`}>
+      <div className={`${styles.row} ${styles.buttons}`} >
         <button onClick={undoLast}>
           <img src="./icons/undo.svg" alt="" />
         </button>
@@ -138,12 +137,11 @@ const ToolBar = (props) => {
         <button onClick={(e)=>setIsHand(true)}>
           <img src="./icons/hand.svg" alt="" />
         </button>
-        <label htmlFor="input-img"  className={styles.labelInput}>
+        <label htmlFor="inputImg"  className={styles.labelInput}>
           <img src="./icons/pic.svg" alt="" />
         </label>
         <input
-        ref={inputImageRef}
-          id="input-img"
+          id="inputImg"
           type="file"
           accept=".jpg, .jpeg, .png"
           style={{ display: 'none' }}

@@ -4,7 +4,7 @@
   justify-content: start;
   align-items: center;
   background-color: #A8C0FF;
-  width: 70px;
+  width: 100px;
   height: 100vh;
   padding: 5px 0;
   border-radius: 7px ;
@@ -21,7 +21,7 @@
 }
 .row .options{ 
     list-style: none;
-    width: 60px;
+    width: 90px;
  
 }
 
@@ -58,10 +58,10 @@
 }
 .colors .options{
   display: flex;
-  flex-direction: column;
-  justify-content:space-between ;
+  gap: 5px;
+  flex-wrap: wrap;
   align-items: center;
-  padding: 0 !important;
+  padding: 0.7rem 0.5rem;
 }
 .colors .option{
   height: 20px;
@@ -94,8 +94,8 @@
   content: '';
   top: 50%;
   left: 50%;
-  height: 12px;
-  width: 12px;
+  height: 7px;
+  width: 7px;
   background: inherit;
   border-radius: inherit;
   border: 2px solid #fff;
@@ -113,7 +113,10 @@
 
 
 
+.row .buttons{
+  background: #6dd400;
 
+}
 .labelInput , .labelInput:focus,
 .buttons button, .buttons button:focus{
   margin-bottom: 13px;
@@ -121,9 +124,8 @@
   left: 0.5rem;
   border-radius: 100%;
   border: 1px solid transparent;
-  width: 3rem;
-  height: 3rem;
-  color: var(--color_main);
+  width: 2rem;
+  height: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -148,7 +150,8 @@
 
 .options{
   display: flex;
-  flex-direction: column;
+  gap: 5px;
+  flex-wrap: wrap;
   align-items: center;
   background-color: #fff;
   padding: 0.7rem 0.5rem;
