@@ -1,0 +1,25 @@
+.pagination{
+  position: absolute;
+  left: 50%;
+  top: 85%;
+  transform: translateX(-50%) ;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+
+.pagination .plus{
+  width: 2.5rem;
+  height: 2.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.479);
+  border-radius: 100%;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 0 0 10px 3px rgba(0, 0, 0, 0.479);
+  cursor: pointer;
+  
+}

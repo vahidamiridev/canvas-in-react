@@ -1,8 +1,12 @@
 import React from 'react'
+import { useParams } from 'react-router-dom';
 
 import styles from './Whiteboard.module.css';
 
 const Whiteboard = (props) => {
+
+  const params = useParams()
+  
 
   const {
     startLeftClickOnCanvas,
@@ -19,7 +23,9 @@ const Whiteboard = (props) => {
   return (
  
     <section className={styles.drawingBoard}>
-        <canvas id="canvas" ref={props.canvasRef} 
+        <canvas id={ 
+          params.id ? ` canvas${params.id}` : 'canvas'
+          } ref={props.canvasRef} 
       
         onMouseDown={(e)=>{startLeftClickOnCanvas(e)}}
         onMouseMove={(e)=>{movingMouseOnCanvas(e)}}

@@ -3,6 +3,8 @@ import Whiteboard from './components/whiteboard/Whiteboard'
 import WhiteboardTwo from './components/whiteboard-two/WhiteboardTwo'
 import ToolBar from './components/tool-bar/ToolBar'
 import React from 'react'
+import Pagination from './components/pagination/Pagination'
+import { Routes, useNavigate , Route } from 'react-router-dom'
 
 function App() {
   const [canvas, setCanvas] = React.useState()
@@ -26,18 +28,22 @@ function App() {
   const [pictures, setPictures] = React.useState([])
   const [fillColor, setFillColor] = React.useState(false)
   const [inputImage, setInputImage] = React.useState()
+  const [numberOfPage , setNumberOfPage] = React.useState(1)
+  const [arrayOfCreatedElementsButton , setArrayOfCreatedElementsButton] = React.useState([])
+
+  const navigate = useNavigate()
 
 
   React.useEffect(() => {
-    const canvas = document.getElementById('canvas')
+    const canvas = document.getElementById(`canvas`)
     setCanvas(canvas)
     const ctx = canvas.getContext('2d')
     setCtx(ctx)
     const inputImage = document.getElementById('inputImg')
     setInputImage(inputImage)
     const fillColor = document.getElementById('fillColor')
-    const isChecked = fillColor.checked
-    setFillColor(isChecked)
+    // const isChecked = fillColor.checked
+    // setFillColor(isChecked)
     setOffsetX(canvas.offsetLeft)
     setOffsetY(canvas.offsetTop)
     const canvasWidth = canvas.offsetWidth
@@ -50,9 +56,10 @@ function App() {
     ctx.fillStyle = '#fff'
     ctx.fillRect(0, 0, canvasWidth, canvasHeight)
     ctx.fillStyle = selectedColor //setting fill style back to the selected Color ,it`ll be the brush color
-  },[canvasHeight , canvasWidth])
+  },[])
 
 
+ 
 
   const handleMouseOut = (e) => {
     // user has left the canvas, so clear the drag flag
@@ -153,7 +160,7 @@ function App() {
         if (selectedTool === 'eraser') {
           setTimeout(() => {
             ctx.lineWidth = 100
-          }, 2000)
+          }, 3000)
         }
         ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY) // creating line according to the mouse pointer
         ctx.stroke() //drawing /filling line with color
@@ -250,16 +257,81 @@ function App() {
     }
   }
 
-  const content = {
-    page1: (
-      <Whiteboard
-        startLeftClickOnCanvas={startLeftClickOnCanvas}
-        movingMouseOnCanvas={movingMouseOnCanvas}
-        stopLeftClickOnCanvas={stopLeftClickOnCanvas}
-        handleMouseOut={handleMouseOut}
-      />
-    ),
+  const changeBackgroundCanvas = (color)=>{
+    ctx.fillStyle = color;
+    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
   }
+
+
+  const gridXFixing = ()=>{
+    ctx.reset()
+      const rectangle = new Path2D();
+      for(let i =0 ; i<1820 ;i +=50){
+        rectangle.rect(0, i, 5000, 50);
+      }
+      ctx.stroke(rectangle);
+    
+}
+
+
+  const gridYFixing = ()=>{
+    ctx.reset()
+      const rectangle = new Path2D();
+      for(let i =0 ; i<1820 ;i +=50){
+        rectangle.rect(i, 0, 50, 5000);
+      }
+      ctx.stroke(rectangle);
+    
+}
+  const gridXYFixing = ()=>{
+    ctx.reset()
+      const rectangle = new Path2D();
+      for(let i =0 ; i<1820 ;i +=50){
+        rectangle.rect(0, i, 5000, 50);
+        rectangle.rect(i, 0, 50, 5000);
+      }
+      ctx.stroke(rectangle);
+}
+
+
+const createElement = (numberOfpage)=>{
+  if(numberOfPage>10)return
+     const element =  React.createElement(
+        'div',
+        {
+          id:numberOfpage,
+          
+          style:{
+             width:'100%' ,
+             height:"100%" ,
+             display:'flex' ,
+             justifyContent:'center' ,
+             alignItems:'center' , 
+             border:"1px solid rgba(0, 0, 0, 0.356)" ,
+             borderRadius:'100%',
+             boxShadow:' 0 0 10px 3px rgba(0, 0, 0, 0.479)',
+             cursor:'pointer'
+
+            } ,
+            onClick:()=>{navigate(`/canvas${numberOfPage}`)}
+
+        },
+        numberOfPage
+      )
+
+      const elements = [...arrayOfCreatedElementsButton]
+      elements.push({
+        id:numberOfPage,
+        element:element
+      })
+      setArrayOfCreatedElementsButton(elements)
+
+
+
+}
+
+
+ 
 
   return (
     <div className="container">
@@ -273,8 +345,41 @@ function App() {
         undoLast={undoLast}
         setIsHand={setIsHand}
         setFillColor={setFillColor}
+        changeBackgroundCanvas={changeBackgroundCanvas}
+        gridXFixing={gridXFixing}
+        gridYFixing={gridYFixing}
+        gridXYFixing= {gridXYFixing}
+
       />
-      {content.page1}
+      {/* <Routes>
+        <Route path='/' element={<Whiteboard 
+             startLeftClickOnCanvas={startLeftClickOnCanvas}
+             movingMouseOnCanvas={movingMouseOnCanvas}
+             stopLeftClickOnCanvas={stopLeftClickOnCanvas}
+             handleMouseOut={handleMouseOut}
+        />}/>
+        <Route path='/canvas:id' element={<Whiteboard 
+             startLeftClickOnCanvas={startLeftClickOnCanvas}
+             movingMouseOnCanvas={movingMouseOnCanvas}
+             stopLeftClickOnCanvas={stopLeftClickOnCanvas}
+             handleMouseOut={handleMouseOut}
+        />}/>
+
+        
+      </Routes> */}
+        <Whiteboard
+        startLeftClickOnCanvas={startLeftClickOnCanvas}
+        movingMouseOnCanvas={movingMouseOnCanvas}
+        stopLeftClickOnCanvas={stopLeftClickOnCanvas}
+        handleMouseOut={handleMouseOut}
+      />
+      <Pagination
+        numberOfPage ={numberOfPage}
+        setNumberOfPage ={setNumberOfPage}
+        createElement={createElement}
+        arrayOfCreatedElementsButton={arrayOfCreatedElementsButton}
+        setArrayOfCreatedElementsButton={setArrayOfCreatedElementsButton}
+      />
     </div>
   )
 }

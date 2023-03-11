@@ -1,8 +1,15 @@
 import React from 'react'
-
 import styles from './ToolBar.module.css'
+import SubMenuShapes from '../sub-menu-shapes/SubMenuShapes'
+import SubMenuColors from '../sub-menu-colors/SubMenuColors'
+import SubMenuBackground from '../sub-menu-background/SubMenuBackground'
 
 const ToolBar = (props) => {
+
+  const [isActiveShapes , setIsActiveShapes ] = React.useState(false) 
+  const [isActiveColors , setIsActiveColors ] = React.useState(false) 
+  const [isActiveBackground , setIsActiveBackground ] = React.useState(false) 
+
   const { setSelectedTool,
        setSelectedColor,
        saveImageHandler ,
@@ -11,122 +18,80 @@ const ToolBar = (props) => {
        undoLast,
        clearCanvasHandler,
        setIsHand,
-       setFillColor
+       setFillColor,
+       changeBackgroundCanvas,
+       gridXFixing,
+       gridYFixing,
+       gridXYFixing,
       } = props
   return (
     <section className={styles.toolsBoard}>
-      <div className={styles.row}>
-        <label className={styles.title}>shapes</label>
-        <ul className={styles.options}>
-          <li
-            className={`${styles.option} ${styles.tool}`}
-            onClick={()=>setSelectedTool('rectangle')}
-            id="rectangle"
-          >
-            <img src="./icons/rectangle.svg" alt="" />
-          </li>
-          <li
-            className={`${styles.option} ${styles.tool}`}
-            onClick={()=>setSelectedTool('circle')}
-            id="circle"
-          >
-            <img src="./icons/circle.svg" alt="" />
-          </li>
-          <li
-            className={`${styles.option} ${styles.tool}`}
-            onClick={()=>setSelectedTool('triangle')}
-            id="triangle"
-          >
-            <img src="./icons/triangle.svg" alt="" />
-          </li>
-          <li
-            className={`${styles.option} ${styles.tool}`}
-            onClick={()=>setSelectedTool('line')}
-            id="line"
-          >
-            <img src="./icons/line.svg" alt="" />
-          </li>
+    
+       
+     
 
-          <li className={styles.option}>
-            <input
-              type="checkbox"
-              id="fillColor"
-              className={styles.fillColor}
-              onChange={(e)=>{setFillColor(e.target.checked)} }
-            />
-            <label htmlFor="fillColor">Fill</label>
-          </li>
-        </ul>
-      </div>
-      <div className={styles.row}>
-        <label className={styles.title}>Options</label>
-        <ul className={styles.options}>
-          <li
-            className={`${styles.option} ${styles.active} ${styles.tool}`}
-            id="brush"
-            onClick={()=>setSelectedTool('brush')}
-          >
-            <img src="./icons/brush.svg" alt="" />
-          </li>
-          <li
-            className={`${styles.option} ${styles.active} ${styles.tool}`}
-            id="marker"
-            onClick={()=>setSelectedTool('marker')}
-          >
-            <img src="./icons/marker.svg" alt="" />
-          </li>
-          <li
-            className={`${styles.option} ${styles.tool}`}
-            id="eraser"
-            onClick={()=>setSelectedTool('eraser')}
-          >
-            <img src="./icons/eraser.svg" alt="" />
-          </li>
-
-          <li className={styles.option} style={{ display: 'inline-inline' }}>
-            <input
-              type="range"
-              className={styles.sizeSlider}
-              id="sizeSlider"
-              min="1"
-              max="15"
-              defaultValue={2}
-              onChange={(e)=>setBrushWidth(e.target.value)}
-            />
-          </li>
-        </ul>
-      </div>
-      <div className={`${styles.row} ${styles.colors}`}>
-        <label className={styles.title}>Colors</label>
-        <ul className={styles.options}>
-          <li className={styles.option} onClick={()=>setSelectedColor('#fff')}></li>
-          <li
-            className={`${styles.option} ${styles.selected} `}
-            onClick={()=>setSelectedColor('#000')}
-          ></li>
-          <li
-            className={styles.option}
-            onClick={()=>setSelectedColor('#e02020')}
-          ></li>
-          <li
-            className={styles.option}
-            onClick={()=>setSelectedColor('#6dd400')}
-          ></li>
-
-          <li className={styles.option}>
-            <input
-              type="color"
-              className={styles.colorPicker}
-              id="colorPicker"
-              defaultValue={'#4a98f7'}
-              onChange={(e) => {
-                setSelectedColor(e.target.value)
-              }}
-            />
-          </li>
-        </ul>
-      </div>
       <div className={`${styles.row} ${styles.buttons}`} >
+
+      <button style={{position:'relative'}} onClick={()=>{
+        setSelectedTool('brush')
+        setSelectedColor('black')
+        setIsActiveColors(!isActiveColors)
+       
+
+      }}>
+          <img src="./icons/pen-black.svg" alt="" />
+        {
+          isActiveColors?   <SubMenuColors
+          setBrushWidth={setBrushWidth}
+          setSelectedColor={setSelectedColor}
+          />:null
+       
+        }
+
+        </button>
+        <button onClick={()=>{
+          setSelectedTool('brush')
+          setSelectedColor('#6dd400')
+        }}>
+          <img src="./icons/pen-green.svg" alt="" />
+        </button> 
+         <button onClick={()=>{
+          setSelectedTool('brush')
+          setSelectedColor('#e02020')
+         }}>
+          <img src="./icons/pen-red.svg" alt="" />
+        </button>
+         <button onClick={()=>{
+          setSelectedTool('marker')
+          setSelectedColor('yellow')
+         }}>
+          <img src="./icons/highlighter.svg" alt="" />
+        </button>
+         <button onClick={()=>{
+          setSelectedTool('eraser')
+          
+         }}>
+          <img src="./icons/clarity_eraser-solid.svg" alt="" />
+        </button>
+         <button onClick={()=>{
+          setIsActiveShapes(!isActiveShapes)
+          }} style={{ position:"relative"}}>
+          <img src="./icons/shape.svg" alt="" />
+         {
+          isActiveShapes ?  <SubMenuShapes
+          setFillColor={setFillColor}
+          setSelectedTool={setSelectedTool}
+          />:''
+         }
+        </button>
+      
+
+
+
+
+
+
+
         <button onClick={undoLast}>
           <img src="./icons/undo.svg" alt="" />
         </button>
@@ -147,8 +112,26 @@ const ToolBar = (props) => {
           style={{ display: 'none' }}
           onChange={(e)=>{changeImageHandler(e)}}
         />
+             <button 
+             style={{ position:"relative"}}
+             onClick={()=>{setIsActiveBackground(!isActiveBackground)}}
+             
+             >
+          <img src="./icons/screen.svg" alt="" />
+         {
+          isActiveBackground ?  <SubMenuBackground
+          changeBackgroundCanvas={changeBackgroundCanvas}
+          gridXFixing={gridXFixing}
+          gridYFixing={gridYFixing}
+          gridXYFixing={gridXYFixing}
+          />:null
+         }
+        </button>
+
+
         <button onClick={saveImageHandler}>
           <img src="./icons/download.svg" alt="" />
+
         </button>
       </div>
     </section>
