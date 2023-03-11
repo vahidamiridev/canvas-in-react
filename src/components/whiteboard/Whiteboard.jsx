@@ -31,6 +31,9 @@ const Whiteboard = (props) => {
         onMouseMove={(e)=>{movingMouseOnCanvas(e)}}
         onMouseUp={(e)=>{stopLeftClickOnCanvas(e)}}
         onMouseOut={(e)=>{handleMouseOut(e)}}
+        onTouchStart={(e)=>{startLeftClickOnCanvas(e)}}
+        onTouchMove={(e)=>{movingMouseOnCanvas(e)}}
+        onTouchEnd={(e)=>{stopLeftClickOnCanvas(e)}}
         
         ></canvas>
     </section>
