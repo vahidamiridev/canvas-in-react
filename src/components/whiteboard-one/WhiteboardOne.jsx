@@ -1,9 +1,8 @@
 import React, { useEffect } from 'react'
-import { useParams } from 'react-router-dom';
 
-import styles from './Whiteboard.module.css';
+import styles from './WhiteboardOne.module.css';
 
-const Whiteboard = (props) => {
+const WhiteboardOne = (props) => {
 
 
   const {
@@ -11,13 +10,14 @@ const Whiteboard = (props) => {
     movingMouseOnCanvas,
     stopLeftClickOnCanvas,
     handleMouseOut,
+    
   } = props
 
 
   return (
  
     <section className={styles.drawingBoard}>
-     <canvas id={'canvas'} 
+     <canvas id='canvas-1' 
           onMouseDown={(e)=>{startLeftClickOnCanvas(e)}}
           onMouseMove={(e)=>{movingMouseOnCanvas(e)}}
           onMouseUp={(e)=>{stopLeftClickOnCanvas(e)}}
@@ -28,4 +28,4 @@ const Whiteboard = (props) => {
   )
 }
 
-export default Whiteboard
+export default WhiteboardOne

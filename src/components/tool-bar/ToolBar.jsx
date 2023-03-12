@@ -23,6 +23,8 @@ const ToolBar = (props) => {
        gridXFixing,
        gridYFixing,
        gridXYFixing,
+     
+       
       } = props
   return (
     <section className={styles.toolsBoard}>
@@ -110,7 +112,11 @@ const ToolBar = (props) => {
           type="file"
           accept=".jpg, .jpeg, .png"
           style={{ display: 'none' }}
-          onChange={(e)=>{changeImageHandler(e)}}
+          onChange={(e)=>{
+       
+            changeImageHandler(e)
+          
+          }}
         />
              <button 
              style={{ position:"relative"}}

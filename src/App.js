@@ -1,12 +1,11 @@
-import './App.css'
-import Whiteboard from './components/whiteboard/Whiteboard'
-import WhiteboardTwo from './components/whiteboard-two/WhiteboardTwo'
-import ToolBar from './components/tool-bar/ToolBar'
 import React from 'react'
+import './App.css'
+import WhiteboardOne from './components/whiteboard-one/WhiteboardOne'
+import ToolBar from './components/tool-bar/ToolBar'
 import Pagination from './components/pagination/Pagination'
-import { Routes , Route } from 'react-router-dom'
 
 function App() {
+
   const [canvas, setCanvas] = React.useState()
   const [ctx, setCtx] = React.useState()
   const [prevMouseX, setPrevMouseX] = React.useState()
@@ -28,14 +27,17 @@ function App() {
   const [pictures, setPictures] = React.useState([])
   const [fillColor, setFillColor] = React.useState(false)
   const [inputImage, setInputImage] = React.useState()
-  const [numberOfPage , setNumberOfPage] = React.useState(0)
+  const [numberOfPage , setNumberOfPage] = React.useState(1)
   const [arrayOfCreatedElementsButton , setArrayOfCreatedElementsButton] = React.useState([])
+  const [isLoading , setIsLoading] = React.useState(false)
+
+
 
  
 
 
   React.useEffect(() => {
-    const canvas = document.getElementById('canvas')
+    const canvas = document.getElementById(`canvas-1`)
     setCanvas(canvas)
     const ctx = canvas.getContext('2d')
     setCtx(ctx)
@@ -231,8 +233,9 @@ function App() {
 
 
   const changeImageHandler = (e) => {
+
     setPictures([])
-    // ctx.clearRect(0, 0, 5000, 5000)
+    ctx.clearRect(0, 0, 5000, 5000)
     const reader = new FileReader()
     reader.readAsDataURL(inputImage.files[0])
     reader.onload = (e) => {
@@ -249,16 +252,14 @@ function App() {
           width: widthOfNewPicture,
           height: heightOfNewPicture,
         })
-        // ctx.clearRect(0, 0, canvasWidth, canvasHeight)
+        ctx.clearRect(0, 0, canvasWidth, canvasHeight)
         ctx.drawImage(image, 0, 0, widthOfNewPicture, heightOfNewPicture)
       }
     }
+ 
   }
 
-  // const changeBackgroundCanvas = (color , imageUrl)=>{
-  //   canvas.style.backgroundColor = color
-  //   canvas.style.backgroundImage = `url(${imageUrl})`
-  // }
+
   const changeBackgroundCanvas = (color )=>{
     canvas.style.backgroundColor = color
  
@@ -305,12 +306,12 @@ function App() {
 }
 
 
-const createElement = (numberOfpage)=>{
-  if(numberOfPage>5)return
+const createElement = (numOfPage)=>{
+  if(numOfPage>5)return
      const element =  React.createElement(
         'div',
         {
-          id:numberOfpage,
+          id:numOfPage,
           
           style:{
              width:'100%' ,
@@ -332,54 +333,84 @@ const createElement = (numberOfpage)=>{
             }
 
         },
-        numberOfPage
+        numOfPage
       )
 
       const elements = [...arrayOfCreatedElementsButton]
       elements.push({
-        id:numberOfPage,
+        id:numOfPage,
         element:element
       })
       setArrayOfCreatedElementsButton(elements)
 
+      numOfPage += 1
+      setNumberOfPage(numOfPage)
+
 }
 
 
- 
+
+
+
+
+
 
   return (
-    <div className="container">
-      <ToolBar
-        setSelectedTool={setSelectedTool}
-        setSelectedColor={setSelectedColor}
-        saveImageHandler={saveImageHandler}
-        changeImageHandler={changeImageHandler}
-        setBrushWidth={setBrushWidth}
-        clearCanvasHandler={clearCanvasHandler}
-        undoLast={undoLast}
-        setIsHand={setIsHand}
-        setFillColor={setFillColor}
-        changeBackgroundCanvas={changeBackgroundCanvas}
-        gridXFixing={gridXFixing}
-        gridYFixing={gridYFixing}
-        gridXYFixing= {gridXYFixing}
+<>
 
-      />
+
+    <h3 style={{
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center',
+    position:'absolute',
+    top:'0',
+    left:'0',
+    color:'#5959e6' ,
+    width:'100%' ,
+    height:'100vh',
+    opacity : isLoading ? '0.9' : '0',
+    backgroundColor:'#fff',
+    fontFamily:'sans-serif'
+
+       }}>Loading...</h3>
+
+    <div className="container" style={{ opacity : !isLoading ? '1' : '0'}}>
+
+
+        <ToolBar
+          setSelectedTool={setSelectedTool}
+          setSelectedColor={setSelectedColor}
+          saveImageHandler={saveImageHandler}
+          changeImageHandler={changeImageHandler}
+          setBrushWidth={setBrushWidth}
+          clearCanvasHandler={clearCanvasHandler}
+          undoLast={undoLast}
+          setIsHand={setIsHand}
+          setFillColor={setFillColor}
+          changeBackgroundCanvas={changeBackgroundCanvas}
+          gridXFixing={gridXFixing}
+          gridYFixing={gridYFixing}
+          gridXYFixing= {gridXYFixing}
+         
+
+        />
+        <WhiteboardOne  
+              startLeftClickOnCanvas={startLeftClickOnCanvas}
+              movingMouseOnCanvas = {movingMouseOnCanvas}
+              stopLeftClickOnCanvas = {stopLeftClickOnCanvas}
+              handleMouseOut = {handleMouseOut}
+              />
+
+        <Pagination
+          numberOfPage ={numberOfPage}
+          setNumberOfPage ={setNumberOfPage}
+          createElement={createElement}
+          arrayOfCreatedElementsButton={arrayOfCreatedElementsButton}
+        />
+</div>
+</>
   
-        <Whiteboard
-        startLeftClickOnCanvas={startLeftClickOnCanvas}
-        movingMouseOnCanvas={movingMouseOnCanvas}
-        stopLeftClickOnCanvas={stopLeftClickOnCanvas}
-        handleMouseOut={handleMouseOut}
-      />
-      
-      <Pagination
-        numberOfPage ={numberOfPage}
-        setNumberOfPage ={setNumberOfPage}
-        createElement={createElement}
-        arrayOfCreatedElementsButton={arrayOfCreatedElementsButton}
-      />
-    </div>
   )
 }
 

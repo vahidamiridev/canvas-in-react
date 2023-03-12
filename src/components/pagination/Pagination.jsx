@@ -17,8 +17,7 @@ const {
         e.stopPropagation()
         let newNumberOfPage = numberOfPage 
         createElement(newNumberOfPage)
-        newNumberOfPage += 1
-          setNumberOfPage(newNumberOfPage)
+       
        
            
       }} >

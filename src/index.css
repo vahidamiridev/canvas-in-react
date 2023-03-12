@@ -10,6 +10,7 @@ body{
   justify-content: center;
   min-height: 100vh;
   background: #bcbcbd;
+  position: relative;
 
   -webkit-touch-callout: none;
   -webkit-user-select: none;
