@@ -4,7 +4,7 @@ import WhiteboardTwo from './components/whiteboard-two/WhiteboardTwo'
 import ToolBar from './components/tool-bar/ToolBar'
 import React from 'react'
 import Pagination from './components/pagination/Pagination'
-import { Routes, useNavigate , Route } from 'react-router-dom'
+import { Routes , Route } from 'react-router-dom'
 
 function App() {
   const [canvas, setCanvas] = React.useState()
@@ -28,22 +28,20 @@ function App() {
   const [pictures, setPictures] = React.useState([])
   const [fillColor, setFillColor] = React.useState(false)
   const [inputImage, setInputImage] = React.useState()
-  const [numberOfPage , setNumberOfPage] = React.useState(1)
+  const [numberOfPage , setNumberOfPage] = React.useState(0)
   const [arrayOfCreatedElementsButton , setArrayOfCreatedElementsButton] = React.useState([])
 
-  const navigate = useNavigate()
+ 
 
 
   React.useEffect(() => {
-    const canvas = document.getElementById(`canvas`)
+    const canvas = document.getElementById('canvas')
     setCanvas(canvas)
     const ctx = canvas.getContext('2d')
     setCtx(ctx)
     const inputImage = document.getElementById('inputImg')
     setInputImage(inputImage)
     const fillColor = document.getElementById('fillColor')
-    // const isChecked = fillColor.checked
-    // setFillColor(isChecked)
     setOffsetX(canvas.offsetLeft)
     setOffsetY(canvas.offsetTop)
     const canvasWidth = canvas.offsetWidth
@@ -53,8 +51,8 @@ function App() {
     canvas.width = canvasWidth
     canvas.height =  canvasHeight
     // //setting whole canvas background to white , so the downloaded img background will be white
-    ctx.fillStyle = '#fff'
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+    // ctx.fillStyle = '#fff'
+    // ctx.fillRect(0, 0, canvasWidth, canvasHeight)
     ctx.fillStyle = selectedColor //setting fill style back to the selected Color ,it`ll be the brush color
   },[])
 
@@ -234,7 +232,7 @@ function App() {
 
   const changeImageHandler = (e) => {
     setPictures([])
-    ctx.clearRect(0, 0, 5000, 5000)
+    // ctx.clearRect(0, 0, 5000, 5000)
     const reader = new FileReader()
     reader.readAsDataURL(inputImage.files[0])
     reader.onload = (e) => {
@@ -251,23 +249,31 @@ function App() {
           width: widthOfNewPicture,
           height: heightOfNewPicture,
         })
-        ctx.clearRect(0, 0, canvasWidth, canvasHeight)
+        // ctx.clearRect(0, 0, canvasWidth, canvasHeight)
         ctx.drawImage(image, 0, 0, widthOfNewPicture, heightOfNewPicture)
       }
     }
   }
 
-  const changeBackgroundCanvas = (color)=>{
-    ctx.fillStyle = color;
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight);
+  // const changeBackgroundCanvas = (color , imageUrl)=>{
+  //   canvas.style.backgroundColor = color
+  //   canvas.style.backgroundImage = `url(${imageUrl})`
+  // }
+  const changeBackgroundCanvas = (color )=>{
+    canvas.style.backgroundColor = color
+ 
   }
 
 
   const gridXFixing = ()=>{
     ctx.reset()
+    ctx.lineWidth = 1
+
+    ctx.strokeStyle = 'rgba(128, 128, 128, 0.281)'
+
       const rectangle = new Path2D();
-      for(let i =0 ; i<1820 ;i +=50){
-        rectangle.rect(0, i, 5000, 50);
+      for(let i =0 ; i<1820 ;i +=30){
+        rectangle.rect(0, i, 5000, 30);
       }
       ctx.stroke(rectangle);
     
@@ -276,26 +282,31 @@ function App() {
 
   const gridYFixing = ()=>{
     ctx.reset()
+    ctx.lineWidth = 1
+
+    ctx.strokeStyle = 'rgba(128, 128, 128, 0.281)'
       const rectangle = new Path2D();
-      for(let i =0 ; i<1820 ;i +=50){
-        rectangle.rect(i, 0, 50, 5000);
+      for(let i =0 ; i<1820 ;i +=30){
+        rectangle.rect(i, 0, 30, 5000);
       }
       ctx.stroke(rectangle);
     
 }
   const gridXYFixing = ()=>{
     ctx.reset()
+    ctx.lineWidth = 1
+    ctx.strokeStyle = 'rgba(128, 128, 128, 0.281)'
       const rectangle = new Path2D();
-      for(let i =0 ; i<1820 ;i +=50){
-        rectangle.rect(0, i, 5000, 50);
-        rectangle.rect(i, 0, 50, 5000);
+      for(let i =0 ; i<1820 ;i +=30){
+        rectangle.rect(0, i, 5000, 30);
+        rectangle.rect(i, 0, 30, 5000);
       }
       ctx.stroke(rectangle);
 }
 
 
 const createElement = (numberOfpage)=>{
-  if(numberOfPage>10)return
+  if(numberOfPage>5)return
      const element =  React.createElement(
         'div',
         {
@@ -310,10 +321,15 @@ const createElement = (numberOfpage)=>{
              border:"1px solid rgba(0, 0, 0, 0.356)" ,
              borderRadius:'100%',
              boxShadow:' 0 0 10px 3px rgba(0, 0, 0, 0.479)',
-             cursor:'pointer'
+             cursor:'pointer',
+            zIndex:'100',
+            backgroundColor:'#fff'
 
             } ,
-            onClick:()=>{navigate(`/canvas${numberOfPage}`)}
+            onClick:(e)=>{
+                e.stopPropagation()
+                console.log(e.target.id)
+            }
 
         },
         numberOfPage
@@ -325,8 +341,6 @@ const createElement = (numberOfpage)=>{
         element:element
       })
       setArrayOfCreatedElementsButton(elements)
-
-
 
 }
 
@@ -351,34 +365,19 @@ const createElement = (numberOfpage)=>{
         gridXYFixing= {gridXYFixing}
 
       />
-      {/* <Routes>
-        <Route path='/' element={<Whiteboard 
-             startLeftClickOnCanvas={startLeftClickOnCanvas}
-             movingMouseOnCanvas={movingMouseOnCanvas}
-             stopLeftClickOnCanvas={stopLeftClickOnCanvas}
-             handleMouseOut={handleMouseOut}
-        />}/>
-        <Route path='/canvas:id' element={<Whiteboard 
-             startLeftClickOnCanvas={startLeftClickOnCanvas}
-             movingMouseOnCanvas={movingMouseOnCanvas}
-             stopLeftClickOnCanvas={stopLeftClickOnCanvas}
-             handleMouseOut={handleMouseOut}
-        />}/>
-
-        
-      </Routes> */}
+  
         <Whiteboard
         startLeftClickOnCanvas={startLeftClickOnCanvas}
         movingMouseOnCanvas={movingMouseOnCanvas}
         stopLeftClickOnCanvas={stopLeftClickOnCanvas}
         handleMouseOut={handleMouseOut}
       />
+      
       <Pagination
         numberOfPage ={numberOfPage}
         setNumberOfPage ={setNumberOfPage}
         createElement={createElement}
         arrayOfCreatedElementsButton={arrayOfCreatedElementsButton}
-        setArrayOfCreatedElementsButton={setArrayOfCreatedElementsButton}
       />
     </div>
   )

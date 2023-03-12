@@ -1,0 +1,14 @@
+
+.drawingBoard{
+  flex: 1;
+
+}
+
+.drawingBoard canvas{
+  background-color: #fff;
+  width:100% ;
+  height: 100vh;
+}
+
+
+

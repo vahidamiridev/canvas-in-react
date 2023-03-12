@@ -6,7 +6,6 @@ const {
   setNumberOfPage,
   createElement,
   arrayOfCreatedElementsButton,
-  setArrayOfCreatedElementsButton
 
 } = props
 
@@ -15,10 +14,11 @@ const {
     <div
     className={styles.pagination}>
       <div className={styles.plus} onClick={(e)=>{
+        e.stopPropagation()
         let newNumberOfPage = numberOfPage 
+        createElement(newNumberOfPage)
         newNumberOfPage += 1
           setNumberOfPage(newNumberOfPage)
-          createElement(newNumberOfPage)
        
            
       }} >

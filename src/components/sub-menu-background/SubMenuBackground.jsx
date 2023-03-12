@@ -15,10 +15,14 @@ gridXYFixing
     onClick={(e)=>e.stopPropagation()}>
         <ul className={styles.options}>
           <li className={styles.option} onClick={(e)=>{
-            changeBackgroundCanvas('#18381d')}}></li>
+            changeBackgroundCanvas('#18381d')
+
+          }
+            }></li>
           <li
             className={`${styles.option} ${styles.selected} `}
             onClick={(e)=>{
+
               changeBackgroundCanvas('#242222')}}
           ></li>
           <li
@@ -28,7 +32,9 @@ gridXYFixing
           ></li>
 
 
-          <li className={styles.option} onClick={gridYFixing}>
+          <li 
+          className={styles.option} 
+          onClick={gridYFixing}>
               <img src="./icons/vertical.svg" alt="" />
             </li>
           <li
