@@ -7,7 +7,7 @@ const SubMenuColors = (props) => {
     setBrushWidth
   } = props
   return (
-    <div className={`${styles.row} ${styles.colors}`} style={{position:'absolute' ,top:'30%' , left:'90%'}}
+    <div className={`${styles.row} ${styles.colors}`} style={{position:'absolute' ,top:'30%' , left:'90%'  , zIndex:"4"}}
     onClick={(e)=>e.stopPropagation()}>
         <ul className={styles.options}>
           <li className={styles.option} onClick={()=>setSelectedColor('#fff')}></li>

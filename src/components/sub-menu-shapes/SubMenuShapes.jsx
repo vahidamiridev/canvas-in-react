@@ -7,7 +7,7 @@ const SubMenuShapes = (props) => {
     setFillColor
   } = props
   return (
-    <div className={styles.row} style={{position:'absolute' ,top:'30%' , left:'90%'}} 
+    <div className={styles.row} style={{position:'absolute' ,top:'30%' , left:'90%' , zIndex:"4"}} 
     onClick={(e)=>e.stopPropagation()}
     >
     <ul className={styles.options}>

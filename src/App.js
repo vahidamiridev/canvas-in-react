@@ -6,6 +6,8 @@ import Pagination from './components/pagination/Pagination'
 
 function App() {
 
+  const [bgCanvas, setBgCanvas] = React.useState()
+  const [bgCtx, setBgCtx] = React.useState()
   const [canvas, setCanvas] = React.useState()
   const [ctx, setCtx] = React.useState()
   const [prevMouseX, setPrevMouseX] = React.useState()
@@ -30,17 +32,20 @@ function App() {
   const [numberOfPage , setNumberOfPage] = React.useState(1)
   const [arrayOfCreatedElementsButton , setArrayOfCreatedElementsButton] = React.useState([])
   const [isLoading , setIsLoading] = React.useState(false)
+  const [sizeOfGrid , setSizeOfGrid] = React.useState(30)
 
-
-
- 
 
 
   React.useEffect(() => {
+   
     const canvas = document.getElementById(`canvas-1`)
     setCanvas(canvas)
     const ctx = canvas.getContext('2d')
     setCtx(ctx)
+    const bgCanvas =document.getElementById(`bgCanvas`)
+    setBgCanvas(bgCanvas)
+    const bgCtx = bgCanvas.getContext('2d')
+    setBgCtx(bgCtx)
     const inputImage = document.getElementById('inputImg')
     setInputImage(inputImage)
     const fillColor = document.getElementById('fillColor')
@@ -50,6 +55,8 @@ function App() {
     setCanvasWidth(canvasWidth)
     const canvasHeight = canvas.offsetHeight 
     setCanvasHeight(canvasHeight)
+    bgCanvas.width = canvas.offsetWidth
+    bgCanvas.height = canvas.offsetHeight
     canvas.width = canvasWidth
     canvas.height =  canvasHeight
     // //setting whole canvas background to white , so the downloaded img background will be white
@@ -58,8 +65,6 @@ function App() {
     ctx.fillStyle = selectedColor //setting fill style back to the selected Color ,it`ll be the brush color
   },[])
 
-
- 
 
   const handleMouseOut = (e) => {
     // user has left the canvas, so clear the drag flag
@@ -188,6 +193,12 @@ function App() {
       // clear the drag flag
       setIsDragging(false)
       setIsHand(false)
+      //next get imageData ///////////////////////////192-196
+      setIndexOfRestoreArrray(indexOfRestoreArrray + 1)
+      const newRestoreArrray = [...restoreArrray]
+      const newImage = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
+      newRestoreArrray.push(newImage)
+      setRestoreArrray(newRestoreArrray)
     } else {
       setIsDrawing(false)
       setIndexOfRestoreArrray(indexOfRestoreArrray + 1)
@@ -201,7 +212,7 @@ function App() {
   const clearCanvasHandler = () => {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight) // clearing whole canvas
     //setting whole canvas background to white , so the downloaded img background will be white
-    ctx.fillStyle = '#fff'
+    ctx.fillStyle = 'transparent'
     ctx.fillRect(0, 0, canvasWidth, canvasHeight)
     ctx.fillStyle = selectedColor //setting fill style back to the selected Color ,it`ll be the brush color
     setRestoreArrray([])
@@ -234,8 +245,8 @@ function App() {
 
   const changeImageHandler = (e) => {
 
-    setPictures([])
-    ctx.clearRect(0, 0, 5000, 5000)
+    // setPictures([])
+    // ctx.clearRect(0, 0, 5000, 5000)
     const reader = new FileReader()
     reader.readAsDataURL(inputImage.files[0])
     reader.onload = (e) => {
@@ -252,57 +263,68 @@ function App() {
           width: widthOfNewPicture,
           height: heightOfNewPicture,
         })
-        ctx.clearRect(0, 0, canvasWidth, canvasHeight)
+        // ctx.clearRect(0, 0, canvasWidth, canvasHeight)
         ctx.drawImage(image, 0, 0, widthOfNewPicture, heightOfNewPicture)
+
+              //next get imageData and commented 244 and 261///////////////////////////265-269
+        setIndexOfRestoreArrray(indexOfRestoreArrray + 1)
+        const newRestoreArrray = [...restoreArrray]
+        const newImage = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
+        newRestoreArrray.push(newImage)
+        setRestoreArrray(newRestoreArrray)
       }
     }
+
  
   }
 
 
   const changeBackgroundCanvas = (color )=>{
-    canvas.style.backgroundColor = color
+    bgCanvas.style.backgroundColor = color
  
   }
 
 
-  const gridXFixing = ()=>{
-    ctx.reset()
-    ctx.lineWidth = 1
+  const gridXFixing = (size)=>{
+    let num = +size
+    bgCtx.reset()
+    bgCtx.lineWidth = 1
 
-    ctx.strokeStyle = 'rgba(128, 128, 128, 0.281)'
+    bgCtx.strokeStyle = 'rgba(128, 128, 128, 0.281)'
 
       const rectangle = new Path2D();
-      for(let i =0 ; i<1820 ;i +=30){
-        rectangle.rect(0, i, 5000, 30);
+      for(let i =0 ; i<1820 ;i +=num){
+        rectangle.rect(0, i, 5000, num);
       }
-      ctx.stroke(rectangle);
+      bgCtx.stroke(rectangle);
     
 }
 
 
-  const gridYFixing = ()=>{
-    ctx.reset()
-    ctx.lineWidth = 1
+  const gridYFixing = (size)=>{
+    let num = +size
+    bgCtx.reset()
+    bgCtx.lineWidth = 1
 
-    ctx.strokeStyle = 'rgba(128, 128, 128, 0.281)'
+    bgCtx.strokeStyle = 'rgba(128, 128, 128, 0.281)'
       const rectangle = new Path2D();
-      for(let i =0 ; i<1820 ;i +=30){
-        rectangle.rect(i, 0, 30, 5000);
+      for(let i =0 ; i<1820 ;i +=num){
+        rectangle.rect(i, 0, num, 5000);
       }
-      ctx.stroke(rectangle);
+      bgCtx.stroke(rectangle);
     
 }
-  const gridXYFixing = ()=>{
-    ctx.reset()
-    ctx.lineWidth = 1
-    ctx.strokeStyle = 'rgba(128, 128, 128, 0.281)'
+  const gridXYFixing = (size)=>{
+      let num = +size
+    bgCtx.reset()
+    bgCtx.lineWidth = 1
+    bgCtx.strokeStyle = 'rgba(128, 128, 128, 0.281)'
       const rectangle = new Path2D();
-      for(let i =0 ; i<1820 ;i +=30){
-        rectangle.rect(0, i, 5000, 30);
-        rectangle.rect(i, 0, 30, 5000);
+      for(let i =0 ; i<1820 ;i +=num){
+        rectangle.rect(0, i, 5000, num);
+        rectangle.rect(i, 0, num, 5000);
       }
-      ctx.stroke(rectangle);
+      bgCtx.stroke(rectangle);
 }
 
 
@@ -349,29 +371,23 @@ const createElement = (numOfPage)=>{
 }
 
 
-
-
-
-
-
-
   return (
 <>
 
 
     <h3 style={{
-    display:'flex',
-    justifyContent:'center',
-    alignItems:'center',
-    position:'absolute',
-    top:'0',
-    left:'0',
-    color:'#5959e6' ,
-    width:'100%' ,
-    height:'100vh',
-    opacity : isLoading ? '0.9' : '0',
-    backgroundColor:'#fff',
-    fontFamily:'sans-serif'
+          display:'flex',
+          justifyContent:'center',
+          alignItems:'center',
+          position:'absolute',
+          top:'0',
+          left:'0',
+          color:'#5959e6' ,
+          width:'100%' ,
+          height:'100vh',
+          opacity : isLoading ? '0.9' : '0',
+          backgroundColor:'#fff',
+          fontFamily:'sans-serif'
 
        }}>Loading...</h3>
 
@@ -392,6 +408,8 @@ const createElement = (numOfPage)=>{
           gridXFixing={gridXFixing}
           gridYFixing={gridYFixing}
           gridXYFixing= {gridXYFixing}
+          sizeOfGrid ={sizeOfGrid}
+          setSizeOfGrid ={setSizeOfGrid}
          
 
         />

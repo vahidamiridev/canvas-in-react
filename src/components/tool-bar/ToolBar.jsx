@@ -23,6 +23,8 @@ const ToolBar = (props) => {
        gridXFixing,
        gridYFixing,
        gridXYFixing,
+       sizeOfGrid,
+       setSizeOfGrid
      
        
       } = props
@@ -130,6 +132,8 @@ const ToolBar = (props) => {
           gridXFixing={gridXFixing}
           gridYFixing={gridYFixing}
           gridXYFixing={gridXYFixing}
+          sizeOfGrid ={sizeOfGrid}
+          setSizeOfGrid ={setSizeOfGrid}
           />:null
          }
         </button>
