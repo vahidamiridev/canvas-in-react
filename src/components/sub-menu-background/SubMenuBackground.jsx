@@ -4,6 +4,11 @@ import styles from './SubMenuBackground.module.css'
 const SubMenuBackground = (props) => {
 
   const [whichGrid ,setWhichGrid ] = React.useState('')
+  const [colorBtns ,setColorBtns ] = React.useState()
+
+
+
+  
 
 const {
 changeBackgroundCanvas,
@@ -20,18 +25,24 @@ setSizeOfGrid
     <div className={`${styles.row} ${styles.colors}`} style={{position:'absolute' ,top:'30%' , left:'90%' , zIndex:"4"}}
     onClick={(e)=>e.stopPropagation()}>
         <ul className={styles.options}>
-          <li className={styles.option} onClick={(e)=>{
+          <li
+           
+           className={styles.option} onClick={(e)=>{
             changeBackgroundCanvas('#18381d')
 
           }
             }></li>
           <li
+           
+                                             
             className={`${styles.option} ${styles.selected} `}
             onClick={(e)=>{
+        
 
               changeBackgroundCanvas('#242222')}}
           ></li>
           <li
+           
             className={styles.option}
             onClick={(e)=>{
               changeBackgroundCanvas('#fff')}}
@@ -39,6 +50,7 @@ setSizeOfGrid
 
 
           <li 
+           
           className={styles.option} 
           onClick={()=> {
             setWhichGrid('y')
@@ -47,6 +59,7 @@ setSizeOfGrid
               <img src="./icons/vertical.svg" alt="" />
             </li>
           <li
+           
             className={`${styles.option}  `}
             onClick={()=> {
               setWhichGrid('x')
@@ -57,6 +70,7 @@ setSizeOfGrid
 
           </li>
           <li
+           
             className={styles.option}
             onClick={()=>{ 
               setWhichGrid('xy')

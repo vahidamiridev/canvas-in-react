@@ -245,35 +245,38 @@ function App() {
 
   const changeImageHandler = (e) => {
 
-    // setPictures([])
-    // ctx.clearRect(0, 0, 5000, 5000)
-    const reader = new FileReader()
-    reader.readAsDataURL(inputImage.files[0])
-    reader.onload = (e) => {
-      const image = new Image()
-      image.src = e.target.result
-      const newPictures = [...pictures]
-      newPictures.push(image)
-      setPictures(newPictures)
-      image.onload = () => {
-        const { height, width } = image
-        const widthOfNewPicture = width > 600 ? 300 : width
-        const heightOfNewPicture = height > 600 ? 300 : height
-        setSizeOfImage({
-          width: widthOfNewPicture,
-          height: heightOfNewPicture,
-        })
-        // ctx.clearRect(0, 0, canvasWidth, canvasHeight)
-        ctx.drawImage(image, 0, 0, widthOfNewPicture, heightOfNewPicture)
-
-              //next get imageData and commented 244 and 261///////////////////////////265-269
-        setIndexOfRestoreArrray(indexOfRestoreArrray + 1)
-        const newRestoreArrray = [...restoreArrray]
-        const newImage = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
-        newRestoreArrray.push(newImage)
-        setRestoreArrray(newRestoreArrray)
+    setIsLoading(true)
+      // setPictures([])
+      // ctx.clearRect(0, 0, 5000, 5000)
+      const reader = new FileReader()
+      reader.readAsDataURL(inputImage.files[0])
+      reader.onload = (e) => {
+        const image = new Image()
+        image.src = e.target.result
+        const newPictures = [...pictures]
+        newPictures.push(image)
+        setPictures(newPictures)
+        image.onload = () => {
+          const { height, width } = image
+          const widthOfNewPicture = width > 600 ? 300 : width
+          const heightOfNewPicture = height > 600 ? 300 : height
+          setSizeOfImage({
+            width: widthOfNewPicture,
+            height: heightOfNewPicture,
+          })
+          // ctx.clearRect(0, 0, canvasWidth, canvasHeight)
+          ctx.drawImage(image, 0, 0, widthOfNewPicture, heightOfNewPicture)
+  
+                //next get imageData and commented 244 and 261///////////////////////////265-269
+          setIndexOfRestoreArrray(indexOfRestoreArrray + 1)
+          const newRestoreArrray = [...restoreArrray]
+          const newImage = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
+          newRestoreArrray.push(newImage)
+          setRestoreArrray(newRestoreArrray)
+        }
+        setIsLoading(false)
       }
-    }
+ 
 
  
   }
@@ -375,21 +378,24 @@ const createElement = (numOfPage)=>{
 <>
 
 
-    <h3 style={{
+    <div style={{
           display:'flex',
           justifyContent:'center',
           alignItems:'center',
           position:'absolute',
           top:'0',
           left:'0',
-          color:'#5959e6' ,
+          color:'#292664' ,
           width:'100%' ,
           height:'100vh',
           opacity : isLoading ? '0.9' : '0',
           backgroundColor:'#fff',
-          fontFamily:'sans-serif'
+          // transform:'translateX(-50%) translateY(-50%)'
 
-       }}>Loading...</h3>
+       }}>
+        <span >  ...لطفاً منتظر بمانید  </span>
+        <img src='./Spin-1s-200px.svg' width='50px' height='50px'/>
+        </div>
 
     <div className="container" style={{ opacity : !isLoading ? '1' : '0'}}>
 

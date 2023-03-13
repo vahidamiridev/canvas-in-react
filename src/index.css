@@ -1,8 +1,12 @@
+@font-face {
+  font-family: Vazir-Medium;
+  src: url('/public/font/Vazir-Medium.ttf');
+}
 *{
   margin: 0;
   padding: 0;
   box-sizing:border-box;
-  font-family: sans-serif;
+  
 }
 body{
   display: flex;
@@ -11,6 +15,8 @@ body{
   min-height: 100vh;
   background: #bcbcbd;
   position: relative;
+  font-family: Vazir-Medium;
+  
 
   -webkit-touch-callout: none;
   -webkit-user-select: none;
