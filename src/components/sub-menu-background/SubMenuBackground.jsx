@@ -1,11 +1,10 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import styles from './SubMenuBackground.module.css'
 
 const SubMenuBackground = (props) => {
 
   const [whichGrid ,setWhichGrid ] = React.useState('')
   const [colorBtns ,setColorBtns ] = React.useState()
-
 
 
   
@@ -16,7 +15,8 @@ gridXFixing,
 gridYFixing,
 gridXYFixing,
 sizeOfGrid,
-setSizeOfGrid
+setSizeOfGrid,
+clearGrid
 } = props
 
 
@@ -79,6 +79,15 @@ setSizeOfGrid
               <img src="./icons/chess.svg" alt="" />
 
           </li>
+          <li
+            className={styles.option}
+            onClick={()=>{ 
+              clearGrid()
+            }}
+          >
+              <img src="./icons/no-grid.svg" alt="" />
+
+          </li>
           <li >
             <input
               type="range"
@@ -102,7 +111,7 @@ setSizeOfGrid
                     case 'xy':
                   gridXYFixing(newSize)
                   break;
-                  default:console.log('err in whichGrid')
+                  default:  gridXYFixing(newSize)
                 }
               }}
             />

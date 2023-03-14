@@ -6,6 +6,14 @@ import Pagination from './components/pagination/Pagination'
 
 function App() {
 
+  const canvasRef = React.useRef(null)
+  const contextRef = React.useRef(null)
+
+  const bgCanvasRef = React.useRef(null)
+  const inputImageRef = React.useRef(null)
+
+  const fillColorRef = React.useRef(null)
+
   const [bgCanvas, setBgCanvas] = React.useState()
   const [bgCtx, setBgCtx] = React.useState()
   const [canvas, setCanvas] = React.useState()
@@ -33,22 +41,30 @@ function App() {
   const [arrayOfCreatedElementsButton , setArrayOfCreatedElementsButton] = React.useState([])
   const [isLoading , setIsLoading] = React.useState(false)
   const [sizeOfGrid , setSizeOfGrid] = React.useState(30)
+  const [background , setBackground] = React.useState('#fff')
+
+  const [isActiveShapes , setIsActiveShapes ] = React.useState(false) 
+  const [isActiveColors , setIsActiveColors ] = React.useState(false) 
+  const [isActiveBackground , setIsActiveBackground ] = React.useState(false)
+  const [isActiveMarker , setIsActiveMarker ] = React.useState(false)
+  const [isActiveEraser , setIsActiveEraser ] = React.useState(false)
+   
 
 
 
   React.useEffect(() => {
    
-    const canvas = document.getElementById(`canvas-1`)
+    const canvas = canvasRef.current
     setCanvas(canvas)
     const ctx = canvas.getContext('2d')
     setCtx(ctx)
-    const bgCanvas =document.getElementById(`bgCanvas`)
+    const bgCanvas =bgCanvasRef.current
     setBgCanvas(bgCanvas)
     const bgCtx = bgCanvas.getContext('2d')
     setBgCtx(bgCtx)
-    const inputImage = document.getElementById('inputImg')
+    const inputImage = inputImageRef.current
     setInputImage(inputImage)
-    const fillColor = document.getElementById('fillColor')
+    const fillColor = fillColorRef.current
     setOffsetX(canvas.offsetLeft)
     setOffsetY(canvas.offsetTop)
     const canvasWidth = canvas.offsetWidth
@@ -63,7 +79,19 @@ function App() {
     // ctx.fillStyle = '#fff'
     // ctx.fillRect(0, 0, canvasWidth, canvasHeight)
     ctx.fillStyle = selectedColor //setting fill style back to the selected Color ,it`ll be the brush color
+    ctx.lineCap = 'round'
+
+   
+    contextRef.current = ctx
   },[])
+
+  const setToDraw = ()=>{
+    contextRef.current.globalCompositeOperation = 'source-over'
+}
+const setToErase = ()=>{
+  contextRef.current.globalCompositeOperation = 'destination-out'
+}
+
 
 
   const handleMouseOut = (e) => {
@@ -72,6 +100,11 @@ function App() {
   }
 
   const startLeftClickOnCanvas =   (e) => {
+    setIsActiveShapes (false)
+    setIsActiveColors (false)
+    setIsActiveBackground(false)
+    setIsActiveMarker(false)
+
     if (isHand) {
       // set the drag flag
       setIsDragging(true)
@@ -158,18 +191,24 @@ function App() {
       if (!isDrawing) return //if isDrawing is false return from here
       ctx.putImageData(snapshot, 0, 0) //adding copied canvas data on ro this canvas
 
-      if (selectedTool === 'brush' || selectedTool === 'eraser') {
+      if (selectedTool === 'brush' || selectedTool === 'eraser'  ) {
         //if selected tool is eraser then set stroleStyle to white
 
-        ctx.strokeStyle = selectedTool === 'eraser' ? '#fff' : selectedColor
-        if (selectedTool === 'eraser') {
-          setTimeout(() => {
-            ctx.lineWidth = 100
-          }, 3000)
-        }
+        // ctx.strokeStyle = 
+        // (selectedTool === 'eraser' && background==='#fff') ? '#fff' :
+        // (selectedTool === 'eraser' && background==='#242222') ? '#242222' :
+        // (selectedTool === 'eraser' && background==='#18381d') ? '#18381d' :
+        //  selectedColor
+
+        ctx.strokeStyle = selectedColor
         ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY) // creating line according to the mouse pointer
         ctx.stroke() //drawing /filling line with color
-      } else if (selectedTool === 'rectangle') {
+
+      }else if (selectedTool === 'eraser') {
+          // contextRef.current.globalCompositeOperation = 'destination-out'
+        
+        } 
+        else if (selectedTool === 'rectangle') {
         drawRect(e)
       } else if (selectedTool === 'circle') {
         drawCircle(e)
@@ -206,6 +245,7 @@ function App() {
       const newImage = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
       newRestoreArrray.push(newImage)
       setRestoreArrray(newRestoreArrray)
+      
     }
   }
 
@@ -244,38 +284,39 @@ function App() {
 
 
   const changeImageHandler = (e) => {
-
+setToDraw()
     setIsLoading(true)
       // setPictures([])
       // ctx.clearRect(0, 0, 5000, 5000)
-      const reader = new FileReader()
-      reader.readAsDataURL(inputImage.files[0])
-      reader.onload = (e) => {
-        const image = new Image()
-        image.src = e.target.result
-        const newPictures = [...pictures]
-        newPictures.push(image)
-        setPictures(newPictures)
-        image.onload = () => {
-          const { height, width } = image
-          const widthOfNewPicture = width > 600 ? 300 : width
-          const heightOfNewPicture = height > 600 ? 300 : height
-          setSizeOfImage({
-            width: widthOfNewPicture,
-            height: heightOfNewPicture,
-          })
-          // ctx.clearRect(0, 0, canvasWidth, canvasHeight)
-          ctx.drawImage(image, 0, 0, widthOfNewPicture, heightOfNewPicture)
-  
-                //next get imageData and commented 244 and 261///////////////////////////265-269
-          setIndexOfRestoreArrray(indexOfRestoreArrray + 1)
-          const newRestoreArrray = [...restoreArrray]
-          const newImage = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
-          newRestoreArrray.push(newImage)
-          setRestoreArrray(newRestoreArrray)
-        }
-        setIsLoading(false)
-      }
+    const reader = new FileReader()
+    reader.readAsDataURL(inputImage.files[0])
+    reader.onload = (e) => {
+    const image = new Image()
+    image.src = e.target.result
+    const newPictures = [...pictures]
+    newPictures.push(image)
+    setPictures(newPictures)
+    image.onload = () => {
+      const { height, width } = image
+      const widthOfNewPicture = width > 600 ? 300 : width
+      const heightOfNewPicture = height > 600 ? 300 : height
+      setSizeOfImage({
+        width: widthOfNewPicture,
+        height: heightOfNewPicture,
+      })
+      // ctx.clearRect(0, 0, canvasWidth, canvasHeight)
+      ctx.drawImage(image, 0, 0, widthOfNewPicture, heightOfNewPicture)
+
+            //next get imageData and commented 244 and 261///////////////////////////265-269
+      setIndexOfRestoreArrray(indexOfRestoreArrray + 1)
+      const newRestoreArrray = [...restoreArrray]
+      const newImage = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
+      newRestoreArrray.push(newImage)
+      setRestoreArrray(newRestoreArrray)
+    }
+    setIsLoading(false)
+  }
+
  
 
  
@@ -284,6 +325,7 @@ function App() {
 
   const changeBackgroundCanvas = (color )=>{
     bgCanvas.style.backgroundColor = color
+    setBackground(color)
  
   }
 
@@ -330,6 +372,10 @@ function App() {
       bgCtx.stroke(rectangle);
 }
 
+const clearGrid = () =>{
+  bgCtx.clearRect(0, 0, canvasWidth, canvasHeight) // clearing whole canvas
+}
+
 
 const createElement = (numOfPage)=>{
   if(numOfPage>5)return
@@ -374,6 +420,8 @@ const createElement = (numOfPage)=>{
 }
 
 
+
+
   return (
 <>
 
@@ -395,8 +443,8 @@ const createElement = (numOfPage)=>{
        }}>
         <span >  ...لطفاً منتظر بمانید  </span>
         <img src='./Spin-1s-200px.svg' width='50px' height='50px'/>
-        </div>
 
+        </div>
     <div className="container" style={{ opacity : !isLoading ? '1' : '0'}}>
 
 
@@ -416,7 +464,22 @@ const createElement = (numOfPage)=>{
           gridXYFixing= {gridXYFixing}
           sizeOfGrid ={sizeOfGrid}
           setSizeOfGrid ={setSizeOfGrid}
-         
+          clearGrid={clearGrid}
+          isActiveShapes  = {isActiveShapes  }
+          isActiveColors = {isActiveColors }
+          isActiveBackground = {isActiveBackground }
+          setIsActiveShapes  = {setIsActiveShapes  }
+          setIsActiveColors  = {setIsActiveColors  }
+          setIsActiveBackground = {setIsActiveBackground }
+          isActiveMarker  ={isActiveMarker}
+          setIsActiveMarker  ={setIsActiveMarker}
+          fillColorRef={fillColorRef}
+          inputImageRef={inputImageRef}
+          setToDraw = {setToDraw}
+          setToErase={setToErase}
+          brushWidth={brushWidth}
+          isActiveEraser={isActiveEraser}
+          setIsActiveEraser={setIsActiveEraser}
 
         />
         <WhiteboardOne  
@@ -424,6 +487,8 @@ const createElement = (numOfPage)=>{
               movingMouseOnCanvas = {movingMouseOnCanvas}
               stopLeftClickOnCanvas = {stopLeftClickOnCanvas}
               handleMouseOut = {handleMouseOut}
+              canvasRef={canvasRef}
+              bgCanvasRef={bgCanvasRef}
               />
 
         <Pagination

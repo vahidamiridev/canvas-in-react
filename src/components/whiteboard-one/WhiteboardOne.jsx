@@ -10,6 +10,8 @@ const WhiteboardOne = (props) => {
     movingMouseOnCanvas,
     stopLeftClickOnCanvas,
     handleMouseOut,
+    canvasRef,
+    bgCanvasRef
     
   } = props
 
@@ -18,16 +20,17 @@ const WhiteboardOne = (props) => {
  
     <section className={styles.drawingBoard}>
             <canvas id='canvas-1' 
+            ref={canvasRef}
                   onMouseDown={(e)=>{
-                    console.log(e)
+             
                     startLeftClickOnCanvas(e)
                   }}
                   onMouseMove={(e)=>{movingMouseOnCanvas(e)}}
                   onMouseUp={(e)=>{stopLeftClickOnCanvas(e)}}
-                  onMouseOut={(e)=>{handleMouseOut(e)}}
+                  onMouseLeave={(e)=>{stopLeftClickOnCanvas(e)}}
 
                   onTouchStart = {(e)=>{
-                    console.log(e)
+                    // console.log(e)
                     startLeftClickOnCanvas(e)
                   }}
                   onTouchMove = {(e)=>{movingMouseOnCanvas(e)}}
@@ -36,7 +39,7 @@ const WhiteboardOne = (props) => {
 
             
               ></canvas>
-              <canvas id='bgCanvas' className={styles["bg-canvas"]}></canvas>
+              <canvas ref={bgCanvasRef} id='bgCanvas' className={styles["bg-canvas"]}></canvas>
     </section>
   )
 }

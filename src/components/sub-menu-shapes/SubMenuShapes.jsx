@@ -4,7 +4,8 @@ import styles from './SubMenuShapes.module.css';
 const SubMenuShapes = (props) => {
   const {
     setSelectedTool,
-    setFillColor
+    setFillColor,
+    fillColorRef
   } = props
   return (
     <div className={styles.row} style={{position:'absolute' ,top:'30%' , left:'90%' , zIndex:"4"}} 
@@ -43,6 +44,7 @@ const SubMenuShapes = (props) => {
       <li className={styles.option}>
         <input
           type="checkbox"
+          ref={fillColorRef}
           id="fillColor"
           className={styles.fillColor}
           onChange={(e)=>{setFillColor(e.target.checked)} }

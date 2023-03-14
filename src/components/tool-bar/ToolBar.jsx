@@ -3,12 +3,12 @@ import styles from './ToolBar.module.css'
 import SubMenuShapes from '../sub-menu-shapes/SubMenuShapes'
 import SubMenuColors from '../sub-menu-colors/SubMenuColors'
 import SubMenuBackground from '../sub-menu-background/SubMenuBackground'
+import SubMenuMarker from '../sub-menu-marker/SubMenuMarker'
+import SubMenuEraser from '../sub-menu-eraser/SubMenuEraser'
 
 const ToolBar = (props) => {
 
-  const [isActiveShapes , setIsActiveShapes ] = React.useState(false) 
-  const [isActiveColors , setIsActiveColors ] = React.useState(false) 
-  const [isActiveBackground , setIsActiveBackground ] = React.useState(false) 
+ 
 
   const { setSelectedTool,
        setSelectedColor,
@@ -24,7 +24,23 @@ const ToolBar = (props) => {
        gridYFixing,
        gridXYFixing,
        sizeOfGrid,
-       setSizeOfGrid
+       setSizeOfGrid,
+       clearGrid,
+       isActiveShapes ,
+      isActiveColors,
+      isActiveBackground,
+      isActiveMarker,
+      setIsActiveMarker,
+      setIsActiveShapes ,
+      setIsActiveColors ,
+      setIsActiveBackground,
+      fillColorRef,
+      inputImageRef,
+      setToDraw,
+      setToErase,
+      brushWidth,
+      isActiveEraser,
+      setIsActiveEraser
      
        
       } = props
@@ -36,7 +52,9 @@ const ToolBar = (props) => {
 
       <div className={`${styles.row} ${styles.buttons}`} >
 
-      <button style={{position:'relative'}} onClick={()=>{
+      <button style={{position:'relative'}} onClick={(e)=>{
+       
+        setToDraw()
         setSelectedTool('brush')
         setSelectedColor('black')
         setIsActiveColors(!isActiveColors)
@@ -48,36 +66,69 @@ const ToolBar = (props) => {
           isActiveColors?   <SubMenuColors
           setBrushWidth={setBrushWidth}
           setSelectedColor={setSelectedColor}
+          setIsActiveColors = {setIsActiveColors}
           />:null
        
         }
 
         </button>
         <button onClick={()=>{
+             setToDraw()
           setSelectedTool('brush')
           setSelectedColor('#6dd400')
         }}>
           <img src="./icons/pen-green.svg" alt="" />
         </button> 
          <button onClick={()=>{
+             setToDraw()
           setSelectedTool('brush')
           setSelectedColor('#e02020')
          }}>
           <img src="./icons/pen-red.svg" alt="" />
         </button>
-         <button onClick={()=>{
+         <button 
+         style={{position:'relative'}}
+         onClick={()=>{
+          setToDraw()
           setSelectedTool('marker')
           setSelectedColor('yellow')
+          setIsActiveMarker(true)
          }}>
           <img src="./icons/highlighter.svg" alt="" />
+
+            {
+              isActiveMarker?<SubMenuMarker
+              setSelectedColor = {setSelectedColor }
+              setBrushWidth = {setBrushWidth }
+              setIsActiveColors = {setIsActiveColors }
+              />:null
+            }
+
         </button>
-         <button onClick={()=>{
-          setSelectedTool('eraser')
+
+         <button 
+         style={{position:'relative'}}
+         onClick={()=>{
+          setIsActiveEraser(!isActiveEraser)
+          // setSelectedTool('eraser')
+          setBrushWidth(15)
+          setSelectedTool('brush')
+          setToErase()
           
          }}>
           <img src="./icons/clarity_eraser-solid.svg" alt="" />
+          {
+            isActiveEraser?
+            <SubMenuEraser
+            setBrushWidth={setBrushWidth}
+            />:null
+
+          
+          } 
+
         </button>
          <button onClick={()=>{
+             setToDraw()
           setIsActiveShapes(!isActiveShapes)
           }} style={{ position:"relative"}}>
           <img src="./icons/shape.svg" alt="" />
@@ -85,6 +136,7 @@ const ToolBar = (props) => {
           isActiveShapes ?  <SubMenuShapes
           setFillColor={setFillColor}
           setSelectedTool={setSelectedTool}
+          fillColorRef={fillColorRef}
           />:''
          }
         </button>
@@ -110,6 +162,7 @@ const ToolBar = (props) => {
           <img src="./icons/pic.svg" alt="" />
         </label>
         <input
+        ref={inputImageRef}
           id="inputImg"
           type="file"
           accept=".jpg, .jpeg, .png"
@@ -134,6 +187,7 @@ const ToolBar = (props) => {
           gridXYFixing={gridXYFixing}
           sizeOfGrid ={sizeOfGrid}
           setSizeOfGrid ={setSizeOfGrid}
+          clearGrid={clearGrid}
           />:null
          }
         </button>
@@ -143,6 +197,8 @@ const ToolBar = (props) => {
           <img src="./icons/download.svg" alt="" />
 
         </button>
+      
+      
       </div>
     </section>
   )

@@ -1,17 +1,21 @@
 import React from 'react'
-import styles from './SubMenuColors.module.css'
+import styles from './SubMenuMarker.module.css'
 
-const SubMenuColors = (props) => {
+const SubMenuMarker = (props) => {
+
+
   const {
     setSelectedColor,
     setBrushWidth,
     setIsActiveColors
   } = props
+
+
   return (
     <div className={`${styles.row} ${styles.colors}`} style={{position:'absolute' ,top:'30%' , left:'90%'  , zIndex:"4"}}
     onClick={(e)=>e.stopPropagation()}>
         <ul className={styles.options}>
-          <li className={styles.option} onClick={()=>setSelectedColor('#fff')}></li>
+          <li className={styles.option} onClick={()=>setSelectedColor('orangered')}></li>
           <li
             className={`${styles.option}`}
             onClick={()=>setSelectedColor('#000')}
@@ -45,7 +49,7 @@ const SubMenuColors = (props) => {
               }}
             />
           </li>
-          <li >
+          {/* <li >
             <input
               type="range"
               className={styles.sizeSlider}
@@ -55,10 +59,10 @@ const SubMenuColors = (props) => {
               defaultValue={2}
               onChange={(e)=>setBrushWidth(e.target.value)}
             />
-          </li>
+          </li> */}
         </ul>
       </div>
   )
 }
 
-export default SubMenuColors
+export default SubMenuMarker

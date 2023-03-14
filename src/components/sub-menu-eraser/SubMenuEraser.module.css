@@ -79,7 +79,7 @@
 }
 
 .colors .option:nth-child(1) {
-  background-color: #fff;
+  background-color: orangered;
   border: 1px solid #bfbfbf;
 }
 .colors .option:nth-child(2) {
