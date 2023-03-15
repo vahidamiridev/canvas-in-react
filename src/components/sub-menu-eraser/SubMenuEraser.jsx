@@ -19,8 +19,8 @@ const {
               type="range"
               className={styles.sizeSlider}
               id="sizeSlider"
-              min="1"
-              max="15"
+              min="5"
+              max="100"
               defaultValue={2}
               onChange={(e)=>setBrushWidth(e.target.value)}
             />

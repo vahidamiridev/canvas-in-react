@@ -5,15 +5,23 @@ import styles from './WhiteboardOne.module.css';
 const WhiteboardOne = (props) => {
 
 
+
+
   const {
     startLeftClickOnCanvas,
     movingMouseOnCanvas,
     stopLeftClickOnCanvas,
     handleMouseOut,
     canvasRef,
-    bgCanvasRef
+    bgCanvasRef,
+    startTouchOnCanvas,
+    setIsTouched
     
   } = props
+
+
+
+
 
 
   return (
@@ -22,7 +30,6 @@ const WhiteboardOne = (props) => {
             <canvas id='canvas-1' 
             ref={canvasRef}
                   onMouseDown={(e)=>{
-             
                     startLeftClickOnCanvas(e)
                   }}
                   onMouseMove={(e)=>{movingMouseOnCanvas(e)}}
@@ -30,12 +37,13 @@ const WhiteboardOne = (props) => {
                   onMouseLeave={(e)=>{stopLeftClickOnCanvas(e)}}
 
                   onTouchStart = {(e)=>{
-                    // console.log(e)
+                    // startTouchOnCanvas(e)
+                    setIsTouched(true)
                     startLeftClickOnCanvas(e)
                   }}
-                  onTouchMove = {(e)=>{movingMouseOnCanvas(e)}}
-                  onTouchEnd={(e)=>{stopLeftClickOnCanvas(e)}}
-                  onTouchCancel={(e)=>{handleMouseOut(e)}}
+                  onTouchMove = {(e)=>{}}
+                  onTouchEnd={(e)=>{}}
+                
 
             
               ></canvas>

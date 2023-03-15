@@ -48,6 +48,12 @@ function App() {
   const [isActiveBackground , setIsActiveBackground ] = React.useState(false)
   const [isActiveMarker , setIsActiveMarker ] = React.useState(false)
   const [isActiveEraser , setIsActiveEraser ] = React.useState(false)
+
+
+  const [isTouched , setIsTouched ] = React.useState(false)
+
+
+
    
 
 
@@ -85,6 +91,16 @@ function App() {
     contextRef.current = ctx
   },[])
 
+  const getXYWhenTouched = (e)=>{
+    let rect = e.target.getBoundingClientRect();
+    let x = e.targetTouches[0].pageX - rect.left;
+    let y = e.targetTouches[0].pageY - rect.top;
+    return{
+      x,
+      y
+    }
+  }
+
   const setToDraw = ()=>{
     contextRef.current.globalCompositeOperation = 'source-over'
 }
@@ -100,18 +116,56 @@ const setToErase = ()=>{
   }
 
   const startLeftClickOnCanvas =   (e) => {
+    if(isTouched)setIsLoading(true)
+    else{
+      setTimeout(() => {
+        setIsLoading(false)
+      }, 2000);
+      setIsActiveShapes (false)
+      setIsActiveColors (false)
+      setIsActiveBackground(false)
+      setIsActiveMarker(false)
+      setIsActiveEraser(false)
+  
+      if (isHand) {
+        // set the drag flag
+        setIsDragging(true)
+      } else {
+        setIsDrawing(true)
+         setPrevMouseX(e.nativeEvent.offsetX) //passing current mouseX position as prevMouseX value
+         setPrevMouseY(e.nativeEvent.offsetY) //passing current mouseY position as prevMouseY value
+        ctx.beginPath() // creating new path to drow
+        ctx.lineWidth = brushWidth //passing brush size as line width
+        ctx.strokeStyle = selectedColor //passing selectedColor as strok style
+        ctx.fillStyle = selectedColor // passing selectedColor as fill style
+        //coping canvas data & passing as snapshot value .. this avoids draging the image
+        const snapshot = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
+        setSnapshot(snapshot)
+  
+  
+      }
+
+    }
+    
+    
+  }
+
+  const startTouchOnCanvas =   (e) => {
+    const result = getXYWhenTouched(e)
+
     setIsActiveShapes (false)
     setIsActiveColors (false)
     setIsActiveBackground(false)
     setIsActiveMarker(false)
+    setIsActiveEraser(false)
 
     if (isHand) {
       // set the drag flag
       setIsDragging(true)
     } else {
       setIsDrawing(true)
-       setPrevMouseX(e.nativeEvent.offsetX) //passing current mouseX position as prevMouseX value
-       setPrevMouseY(e.nativeEvent.offsetY) //passing current mouseY position as prevMouseY value
+       setPrevMouseX(result.x) //passing current mouseX position as prevMouseX value
+       setPrevMouseY(result.y) //passing current mouseY position as prevMouseY value
       ctx.beginPath() // creating new path to drow
       ctx.lineWidth = brushWidth //passing brush size as line width
       ctx.strokeStyle = selectedColor //passing selectedColor as strok style
@@ -124,7 +178,10 @@ const setToErase = ()=>{
     }
   }
 
+
+
   const drawRect = (e) => {
+
     //if fillColor isn`t checked draw a react with border else draw react with background
     if (!fillColor) {
       //strockeRect(x-cordinate , y-cordinate , width , height) draw according to the mouse pointer
@@ -332,7 +389,7 @@ setToDraw()
 
   const gridXFixing = (size)=>{
     let num = +size
-    bgCtx.reset()
+    bgCtx.clearRect(0, 0, 5000, 5000)
     bgCtx.lineWidth = 1
 
     bgCtx.strokeStyle = 'rgba(128, 128, 128, 0.281)'
@@ -348,7 +405,7 @@ setToDraw()
 
   const gridYFixing = (size)=>{
     let num = +size
-    bgCtx.reset()
+    bgCtx.clearRect(0, 0, 5000, 5000)
     bgCtx.lineWidth = 1
 
     bgCtx.strokeStyle = 'rgba(128, 128, 128, 0.281)'
@@ -361,7 +418,7 @@ setToDraw()
 }
   const gridXYFixing = (size)=>{
       let num = +size
-    bgCtx.reset()
+    bgCtx.clearRect(0, 0, 5000, 5000)
     bgCtx.lineWidth = 1
     bgCtx.strokeStyle = 'rgba(128, 128, 128, 0.281)'
       const rectangle = new Path2D();
@@ -480,8 +537,8 @@ const createElement = (numOfPage)=>{
           brushWidth={brushWidth}
           isActiveEraser={isActiveEraser}
           setIsActiveEraser={setIsActiveEraser}
-
         />
+
         <WhiteboardOne  
               startLeftClickOnCanvas={startLeftClickOnCanvas}
               movingMouseOnCanvas = {movingMouseOnCanvas}
@@ -489,6 +546,8 @@ const createElement = (numOfPage)=>{
               handleMouseOut = {handleMouseOut}
               canvasRef={canvasRef}
               bgCanvasRef={bgCanvasRef}
+              startTouchOnCanvas={startTouchOnCanvas}
+              setIsTouched={setIsTouched}
               />
 
         <Pagination
