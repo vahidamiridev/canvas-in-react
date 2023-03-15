@@ -40,7 +40,8 @@ const ToolBar = (props) => {
       setToErase,
       brushWidth,
       isActiveEraser,
-      setIsActiveEraser
+      setIsActiveEraser,
+      allIndexOfimages
      
        
       } = props
@@ -196,6 +197,13 @@ const ToolBar = (props) => {
         <button onClick={saveImageHandler}>
           <img src="./icons/download.svg" alt="" />
 
+        </button>
+
+
+        <button onClick={()=>{
+          console.log(allIndexOfimages)
+        }}>
+         Go
         </button>
       
       

@@ -37,10 +37,7 @@ function App() {
   const [fillColor, setFillColor] = React.useState(false)
   const [inputImage, setInputImage] = React.useState()
   const [numberOfPage, setNumberOfPage] = React.useState(1)
-  const [
-    arrayOfCreatedElementsButton,
-    setArrayOfCreatedElementsButton,
-  ] = React.useState([])
+  const [arrayOfCreatedElementsButton,setArrayOfCreatedElementsButton,] = React.useState([])
   const [isLoading, setIsLoading] = React.useState(false)
   const [sizeOfGrid, setSizeOfGrid] = React.useState(30)
   const [background, setBackground] = React.useState('#fff')
@@ -51,7 +48,7 @@ function App() {
   const [isActiveMarker, setIsActiveMarker] = React.useState(false)
   const [isActiveEraser, setIsActiveEraser] = React.useState(false)
 
-  const [isTouched, setIsTouched] = React.useState(false)
+  const [allIndexOfimages, setAllIndexOfimages] = React.useState([])
 
   React.useEffect(() => {
     const canvas = canvasRef.current
@@ -258,8 +255,8 @@ function App() {
         ctx.clearRect(0, 0, 5000, 5000)
         ctx.drawImage(
           pictures[0],
-          canMouseX - 128 / 2,
-          canMouseY - 120 / 2,
+          canMouseX -300 ,
+          canMouseY - 150,
           sizeOfImage.width,
           sizeOfImage.height,
         )
@@ -311,8 +308,8 @@ const result = getXYWhenTouched(e)
         ctx.clearRect(0, 0, 5000, 5000)
         ctx.drawImage(
           pictures[0],
-          canMouseX - 128 / 2,
-          canMouseY - 120 / 2,
+          canMouseX -300 ,
+          canMouseY - 150,
           sizeOfImage.width,
           sizeOfImage.height,
         )
@@ -365,6 +362,10 @@ const result = getXYWhenTouched(e)
       const newImage = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
       newRestoreArrray.push(newImage)
       setRestoreArrray(newRestoreArrray)
+      //****************************************************************************
+      let newAllIndexOfimages = [...allIndexOfimages]
+      newAllIndexOfimages.push(newRestoreArrray.length-1)
+      setAllIndexOfimages(newAllIndexOfimages)
     } else {
       setIsDrawing(false)
       setIndexOfRestoreArrray(indexOfRestoreArrray + 1)
@@ -410,8 +411,8 @@ const result = getXYWhenTouched(e)
 
   const changeImageHandler = (e) => {
     setToDraw()
+    //  setPictures([])
     setIsLoading(true)
-    // setPictures([])
     // ctx.clearRect(0, 0, 5000, 5000)
     const reader = new FileReader()
     reader.readAsDataURL(inputImage.files[0])
@@ -419,6 +420,7 @@ const result = getXYWhenTouched(e)
       const image = new Image()
       image.src = e.target.result
       const newPictures = [...pictures]
+      newPictures.splice(0,1)
       newPictures.push(image)
       setPictures(newPictures)
       image.onload = () => {
@@ -438,6 +440,11 @@ const result = getXYWhenTouched(e)
         const newImage = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
         newRestoreArrray.push(newImage)
         setRestoreArrray(newRestoreArrray)
+        //************************************************************************************
+        let newAllIndexOfimages = [...allIndexOfimages]
+        newAllIndexOfimages.push(newRestoreArrray.length-1)
+        setAllIndexOfimages(newAllIndexOfimages)
+    
       }
       setIsLoading(false)
     }
@@ -584,6 +591,8 @@ const result = getXYWhenTouched(e)
           brushWidth={brushWidth}
           isActiveEraser={isActiveEraser}
           setIsActiveEraser={setIsActiveEraser}
+          allIndexOfimages = {allIndexOfimages}
+          
         />
 
         <WhiteboardOne
@@ -594,7 +603,6 @@ const result = getXYWhenTouched(e)
           canvasRef={canvasRef}
           bgCanvasRef={bgCanvasRef}
           startTouchOnCanvas={startTouchOnCanvas}
-          setIsTouched={setIsTouched}
           movingTouchOnCanvas = {movingTouchOnCanvas}
           
         />

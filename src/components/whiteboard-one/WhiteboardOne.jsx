@@ -33,12 +33,12 @@ const WhiteboardOne = (props) => {
                   onMouseDown={(e)=>{startLeftClickOnCanvas(e)}}
                   onMouseMove={(e)=>{movingMouseOnCanvas(e)}}
                   onMouseUp={(e)=>{stopLeftClickOnCanvas(e)}}
-                  onMouseLeave={(e)=>{stopLeftClickOnCanvas(e)}}
+                  // onMouseLeave={(e)=>{stopLeftClickOnCanvas(e)}}
 
                   onTouchStart = {(e)=>{startTouchOnCanvas(e)}}
                   onTouchMove = {(e)=>{movingTouchOnCanvas(e)}}
                   onTouchEnd={(e)=>{stopLeftClickOnCanvas(e)}}
-                  onTouchCancel ={(e)=>{stopLeftClickOnCanvas(e)}}
+                  // onTouchCancel ={(e)=>{stopLeftClickOnCanvas(e)}}
                 
 
             
