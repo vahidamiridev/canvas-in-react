@@ -3,7 +3,9 @@ import styles from './SubMenuEraser.module.css'
 
 const SubMenuEraser = (props) => {
 const { 
-  setBrushWidth
+  setBrushWidthEraser,
+  brushWidthEraser
+
 } = props
 
   return (
@@ -21,8 +23,8 @@ const {
               id="sizeSlider"
               min="5"
               max="100"
-              defaultValue={2}
-              onChange={(e)=>setBrushWidth(e.target.value)}
+              defaultValue={brushWidthEraser}
+              onChange={(e)=>setBrushWidthEraser(e.target.value)}
             />
           </li>
         </ul>

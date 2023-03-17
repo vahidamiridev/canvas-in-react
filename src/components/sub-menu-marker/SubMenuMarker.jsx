@@ -5,7 +5,8 @@ const SubMenuMarker = (props) => {
 
 
   const {
-    setSelectedColor,
+    
+    setColor,
     setBrushWidth,
     setIsActiveColors
   } = props
@@ -15,22 +16,22 @@ const SubMenuMarker = (props) => {
     <div className={`${styles.row} ${styles.colors}`} style={{position:'absolute' ,top:'30%' , left:'90%'  , zIndex:"4"}}
     onClick={(e)=>e.stopPropagation()}>
         <ul className={styles.options}>
-          <li className={styles.option} onClick={()=>setSelectedColor('orangered')}></li>
+          <li className={styles.option} onClick={()=>setColor('orangered')}></li>
           <li
             className={`${styles.option}`}
-            onClick={()=>setSelectedColor('#000')}
+            onClick={()=>setColor('#000')}
           ></li>
           <li
             className={styles.option}
-            onClick={()=>setSelectedColor('#e02020')}
+            onClick={()=>setColor('#e02020')}
           ></li>
           <li
             className={styles.option}
-            onClick={()=>setSelectedColor('#6dd400')}
+            onClick={()=>setColor('#6dd400')}
           ></li>
           <li
             className={styles.option}
-            onClick={()=>setSelectedColor('yellow')}
+            onClick={()=>setColor('yellow')}
           ></li>
 
           <li className={styles.option}>
@@ -45,7 +46,7 @@ const SubMenuMarker = (props) => {
               id="colorPicker"
               defaultValue={'#4a98f7'}
               onChange={(e) => {
-                setSelectedColor(e.target.value)
+                setColor(e.target.value)
               }}
             />
           </li>

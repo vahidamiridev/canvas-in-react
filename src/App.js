@@ -22,8 +22,10 @@ function App() {
   const [snapshot, setSnapshot] = React.useState()
   const [isDrawing, setIsDrawing] = React.useState(false)
   const [brushWidth, setBrushWidth] = React.useState(5)
+  const [brushWidthEraser, setBrushWidthEraser] = React.useState(15)
+
   const [selectedTool, setSelectedTool] = React.useState('brush')
-  const [selectedColor, setSelectedColor] = React.useState('#000')
+  const [selectedColor, setSelectedColor] = React.useState('')
   const [restoreArrray, setRestoreArrray] = React.useState([])
   const [indexOfRestoreArrray, setIndexOfRestoreArrray] = React.useState(-1)
   const [isHand, setIsHand] = React.useState(false)
@@ -44,11 +46,26 @@ function App() {
 
   const [isActiveShapes, setIsActiveShapes] = React.useState(false)
   const [isActiveColors, setIsActiveColors] = React.useState(false)
+  
+  const [isActiveFirstPen , setIsActiveFirstPen] = React.useState(false)
+  const [isActiveSecondPen, setIsActiveSecondPen] = React.useState(false)
+  const [isActiveThirdPen , setIsActiveThirdPen] = React.useState(false)
+
   const [isActiveBackground, setIsActiveBackground] = React.useState(false)
   const [isActiveMarker, setIsActiveMarker] = React.useState(false)
   const [isActiveEraser, setIsActiveEraser] = React.useState(false)
 
   const [allIndexOfimages, setAllIndexOfimages] = React.useState([])
+  
+  const [mainColorOne, setMainColorOne] = React.useState('black')
+  const [mainColorTwo, setMainColorTwo] = React.useState('#6dd400')
+  const [mainColorThree, setMainColorThree] = React.useState('#e02020')
+  const [mainColorMarker, setMainColorMarker] = React.useState('yellow')
+
+  
+
+
+  
 
   React.useEffect(() => {
     const canvas = canvasRef.current
@@ -75,7 +92,7 @@ function App() {
     // //setting whole canvas background to white , so the downloaded img background will be white
     // ctx.fillStyle = '#fff'
     // ctx.fillRect(0, 0, canvasWidth, canvasHeight)
-    ctx.fillStyle = selectedColor //setting fill style back to the selected Color ,it`ll be the brush color
+    // ctx.fillStyle = selectedColor //setting fill style back to the selected Color ,it`ll be the brush color
     ctx.lineCap = 'round'
 
     contextRef.current = ctx
@@ -108,8 +125,8 @@ function App() {
     setIsActiveShapes(false)
     setIsActiveColors(false)
     setIsActiveBackground(false)
-    setIsActiveMarker(false)
     setIsActiveEraser(false)
+  
 
     if (isHand) {
       // set the drag flag
@@ -119,9 +136,17 @@ function App() {
       setPrevMouseX(e.nativeEvent.offsetX) //passing current mouseX position as prevMouseX value
       setPrevMouseY(e.nativeEvent.offsetY) //passing current mouseY position as prevMouseY value
       ctx.beginPath() // creating new path to drow
-      ctx.lineWidth = brushWidth //passing brush size as line width
-      ctx.strokeStyle = selectedColor //passing selectedColor as strok style
-      ctx.fillStyle = selectedColor // passing selectedColor as fill style
+      ctx.lineWidth = selectedTool ==='eraser'?brushWidthEraser:brushWidth //passing brush size as line width
+      //passing selectedColor as strok style
+      ctx.strokeStyle = isActiveFirstPen? mainColorOne:
+                        isActiveSecondPen ? mainColorTwo : 
+                        isActiveThirdPen ? mainColorThree:
+                        isActiveMarker? mainColorMarker :  mainColorOne
+                        // passing selectedColor as fill style
+      ctx.fillStyle = isActiveFirstPen? mainColorOne:
+                      isActiveSecondPen ? mainColorTwo : 
+                      isActiveThirdPen ? mainColorThree:
+                      isActiveMarker? mainColorMarker :  mainColorOne
       //coping canvas data & passing as snapshot value .. this avoids draging the image
       const snapshot = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
       setSnapshot(snapshot)
@@ -134,8 +159,8 @@ function App() {
     setIsActiveShapes(false)
     setIsActiveColors(false)
     setIsActiveBackground(false)
-    setIsActiveMarker(false)
     setIsActiveEraser(false)
+  
 
     if (isHand) {
       // set the drag flag
@@ -145,9 +170,17 @@ function App() {
       setPrevMouseX(result.x) //passing current mouseX position as prevMouseX value
       setPrevMouseY(result.y) //passing current mouseY position as prevMouseY value
       ctx.beginPath() // creating new path to drow
-      ctx.lineWidth = brushWidth //passing brush size as line width
-      ctx.strokeStyle = selectedColor //passing selectedColor as strok style
-      ctx.fillStyle = selectedColor // passing selectedColor as fill style
+      ctx.lineWidth = selectedTool ==='eraser'?brushWidthEraser:brushWidth //passing brush size as line width
+       //passing selectedColor as strok style
+       ctx.strokeStyle = isActiveFirstPen? mainColorOne:
+                          isActiveSecondPen ? mainColorTwo : 
+                          isActiveThirdPen ? mainColorThree:
+                          isActiveMarker? mainColorMarker :  mainColorOne
+       // passing selectedColor as fill style
+      ctx.fillStyle = isActiveFirstPen? mainColorOne:
+                      isActiveSecondPen ? mainColorTwo : 
+                      isActiveThirdPen ? mainColorThree:
+                      isActiveMarker? mainColorMarker :  mainColorOne
       //coping canvas data & passing as snapshot value .. this avoids draging the image
       const snapshot = ctx.getImageData(0, 0, canvasWidth, canvasHeight)
       setSnapshot(snapshot)
@@ -273,8 +306,10 @@ function App() {
         // (selectedTool === 'eraser' && background==='#242222') ? '#242222' :
         // (selectedTool === 'eraser' && background==='#18381d') ? '#18381d' :
         //  selectedColor
-
-        ctx.strokeStyle = selectedColor
+        ctx.strokeStyle =  isActiveFirstPen? mainColorOne:
+                            isActiveSecondPen ? mainColorTwo : 
+                            isActiveThirdPen ? mainColorThree:
+                            isActiveMarker? mainColorMarker :  mainColorOne
         ctx.lineTo(e.nativeEvent.offsetX, e.nativeEvent.offsetY) // creating line according to the mouse pointer
         ctx.stroke() //drawing /filling line with color
       } else if (selectedTool === 'eraser') {
@@ -327,7 +362,10 @@ const result = getXYWhenTouched(e)
         // (selectedTool === 'eraser' && background==='#18381d') ? '#18381d' :
         //  selectedColor
 
-        ctx.strokeStyle = selectedColor
+        ctx.strokeStyle =  isActiveFirstPen? mainColorOne:
+                          isActiveSecondPen ? mainColorTwo : 
+                          isActiveThirdPen ? mainColorThree:
+                          isActiveMarker? mainColorMarker :  mainColorOne
         ctx.lineTo(result.x, result.y) // creating line according to the mouse pointer
         ctx.stroke() //drawing /filling line with color
       } else if (selectedTool === 'eraser') {
@@ -379,9 +417,9 @@ const result = getXYWhenTouched(e)
   const clearCanvasHandler = () => {
     ctx.clearRect(0, 0, canvasWidth, canvasHeight) // clearing whole canvas
     //setting whole canvas background to white , so the downloaded img background will be white
-    ctx.fillStyle = 'transparent'
-    ctx.fillRect(0, 0, canvasWidth, canvasHeight)
-    ctx.fillStyle = selectedColor //setting fill style back to the selected Color ,it`ll be the brush color
+    // ctx.fillStyle = 'transparent'
+    // ctx.fillRect(0, 0, canvasWidth, canvasHeight)
+    // ctx.fillStyle = selectedColor //setting fill style back to the selected Color ,it`ll be the brush color
     setRestoreArrray([])
     setIndexOfRestoreArrray(-1)
     setPictures([])
@@ -562,6 +600,14 @@ const result = getXYWhenTouched(e)
         <ToolBar
           setSelectedTool={setSelectedTool}
           setSelectedColor={setSelectedColor}
+          selectedColor = {selectedColor}
+          mainColorOne = {mainColorOne}
+          mainColorTwo = {mainColorTwo}
+          mainColorThree ={mainColorThree}
+          mainColorMarker={mainColorMarker}
+          setMainColorOne ={setMainColorOne}
+          setMainColorTwo ={setMainColorTwo}
+          setMainColorThree = {setMainColorThree}
           saveImageHandler={saveImageHandler}
           changeImageHandler={changeImageHandler}
           setBrushWidth={setBrushWidth}
@@ -592,6 +638,15 @@ const result = getXYWhenTouched(e)
           isActiveEraser={isActiveEraser}
           setIsActiveEraser={setIsActiveEraser}
           allIndexOfimages = {allIndexOfimages}
+          setIsActiveFirstPen = {setIsActiveFirstPen}
+          setIsActiveSecondPen = { setIsActiveSecondPen}
+          setIsActiveThirdPen = {setIsActiveThirdPen}
+          isActiveFirstPen  = {isActiveFirstPen }
+          isActiveSecondPen = {isActiveSecondPen}
+          isActiveThirdPen  = {isActiveThirdPen }
+          setMainColorMarker={setMainColorMarker}
+          setBrushWidthEraser={setBrushWidthEraser}
+          brushWidthEraser={brushWidthEraser}
           
         />
 

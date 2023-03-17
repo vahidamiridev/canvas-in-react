@@ -95,7 +95,7 @@ clearGrid
               id="sizeSlider"
               min="10"
               max="55"
-              defaultValue={45}
+              defaultValue={sizeOfGrid}
               onChange={(e)=>{
                 let newSize = sizeOfGrid
                 newSize = e.target.value

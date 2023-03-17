@@ -5,6 +5,10 @@ import SubMenuColors from '../sub-menu-colors/SubMenuColors'
 import SubMenuBackground from '../sub-menu-background/SubMenuBackground'
 import SubMenuMarker from '../sub-menu-marker/SubMenuMarker'
 import SubMenuEraser from '../sub-menu-eraser/SubMenuEraser'
+import FirstPen from '../../ui/icons/FirstPen' 
+import SecondPen from '../../ui/icons/SecondPen'
+import ThirdPen from '../../ui/icons/ThirdPen'
+import MarkerIcon from '../../ui/icons/MarkerIcon'
 
 const ToolBar = (props) => {
 
@@ -12,6 +16,14 @@ const ToolBar = (props) => {
 
   const { setSelectedTool,
        setSelectedColor,
+       selectedColor,
+       mainColorOne,
+       mainColorTwo,
+       mainColorThree,
+       mainColorMarker,
+       setMainColorOne,
+       setMainColorTwo,
+       setMainColorThree,
        saveImageHandler ,
        changeImageHandler ,
        setBrushWidth,
@@ -41,7 +53,17 @@ const ToolBar = (props) => {
       brushWidth,
       isActiveEraser,
       setIsActiveEraser,
-      allIndexOfimages
+      allIndexOfimages,
+      isActiveFirstPen ,
+      isActiveSecondPen,
+      isActiveThirdPen ,
+      setIsActiveFirstPen,
+      setIsActiveSecondPen,
+      setIsActiveThirdPen,
+      setMainColorMarker,
+      setBrushWidthEraser,
+      brushWidthEraser
+
      
        
       } = props
@@ -57,50 +79,91 @@ const ToolBar = (props) => {
        
         setToDraw()
         setSelectedTool('brush')
-        setSelectedColor('black')
-        setIsActiveColors(!isActiveColors)
-       
-
+        // setMainColorOne()
+        setIsActiveFirstPen(true)
+        setIsActiveSecondPen(false)
+        setIsActiveThirdPen(false)
+        setIsActiveMarker(false)
       }}>
-          <img src="./icons/pen-black.svg" alt="" />
+          {/* <img src="./icons/pen-black.svg" alt="" /> */}
+          <FirstPen color={mainColorOne}/>
         {
-          isActiveColors?   <SubMenuColors
+          isActiveFirstPen?   <SubMenuColors
           setBrushWidth={setBrushWidth}
-          setSelectedColor={setSelectedColor}
+          brushWidth={brushWidth}
+          setColor={setMainColorOne}
+          // setActive = {setIsActiveFirstPen}
           setIsActiveColors = {setIsActiveColors}
           />:null
        
         }
 
         </button>
-        <button onClick={()=>{
+        <button style={{position:'relative'}} onClick={()=>{
              setToDraw()
           setSelectedTool('brush')
-          setSelectedColor('#6dd400')
+          // setSelectedColor('#6dd400')
+          setIsActiveFirstPen(false)
+          setIsActiveSecondPen(true)
+          setIsActiveThirdPen(false)
+        setIsActiveMarker(false)
+
         }}>
-          <img src="./icons/pen-green.svg" alt="" />
+          {/* <img src="./icons/pen-green.svg" alt="" /> */}
+          <SecondPen color={mainColorTwo}/>
+          {
+          isActiveSecondPen?   <SubMenuColors
+          setBrushWidth={setBrushWidth}
+          brushWidth={brushWidth}
+          setColor={setMainColorTwo}
+          // setActive ={setIsActiveSecondPen}
+          setIsActiveColors = {setIsActiveColors}
+          />:null
+       
+        }
         </button> 
-         <button onClick={()=>{
+         <button style={{position:'relative'}} onClick={()=>{
              setToDraw()
           setSelectedTool('brush')
-          setSelectedColor('#e02020')
+          // setSelectedColor('#e02020')
+          setIsActiveFirstPen(false)
+          setIsActiveSecondPen(false)
+          setIsActiveThirdPen(true)
+        setIsActiveMarker(false)
+
          }}>
-          <img src="./icons/pen-red.svg" alt="" />
+          {/* <img src="./icons/pen-red.svg" alt="" /> */}
+          <ThirdPen color={mainColorThree}/>
+          {
+          isActiveThirdPen?   <SubMenuColors
+          setBrushWidth={setBrushWidth}
+          brushWidth={brushWidth}
+          setColor={setMainColorThree}
+          // setActive ={setIsActiveThirdPen}
+          setIsActiveColors = {setIsActiveColors}
+          />:null
+       
+        }
         </button>
          <button 
          style={{position:'relative'}}
          onClick={()=>{
           setToDraw()
           setSelectedTool('marker')
-          setSelectedColor('yellow')
+          // setSelectedColor('yellow')
+          setIsActiveFirstPen(false)
+          setIsActiveSecondPen(false)
+          setIsActiveThirdPen(false)
           setIsActiveMarker(true)
          }}>
-          <img src="./icons/highlighter.svg" alt="" />
+          {/* <img src="./icons/highlighter.svg" alt="" /> */}
+          <MarkerIcon color={mainColorMarker}/>
 
             {
               isActiveMarker?<SubMenuMarker
               setSelectedColor = {setSelectedColor }
               setBrushWidth = {setBrushWidth }
+              setColor={setMainColorMarker}
               setIsActiveColors = {setIsActiveColors }
               />:null
             }
@@ -110,10 +173,13 @@ const ToolBar = (props) => {
          <button 
          style={{position:'relative'}}
          onClick={()=>{
-          setIsActiveEraser(!isActiveEraser)
-          // setSelectedTool('eraser')
-          setBrushWidth(15)
-          setSelectedTool('brush')
+          setIsActiveFirstPen(false)
+          setIsActiveSecondPen(false)
+          setIsActiveThirdPen(false)
+          setIsActiveMarker(false)
+          setIsActiveEraser(true)
+          setSelectedTool('eraser')
+          // setSelectedTool('brush')
           setToErase()
           
          }}>
@@ -121,7 +187,8 @@ const ToolBar = (props) => {
           {
             isActiveEraser?
             <SubMenuEraser
-            setBrushWidth={setBrushWidth}
+            setBrushWidthEraser={setBrushWidthEraser}
+            brushWidthEraser={brushWidthEraser}
             />:null
 
           
@@ -131,6 +198,12 @@ const ToolBar = (props) => {
          <button onClick={()=>{
              setToDraw()
           setIsActiveShapes(!isActiveShapes)
+          setIsActiveFirstPen(false)
+          setIsActiveSecondPen(false)
+          setIsActiveThirdPen(false)
+          setIsActiveMarker(false)
+          setIsActiveEraser(false)
+          
           }} style={{ position:"relative"}}>
           <img src="./icons/shape.svg" alt="" />
          {
@@ -149,14 +222,38 @@ const ToolBar = (props) => {
 
 
 
-        <button onClick={undoLast}>
+        <button onClick={()=>{
+          undoLast()
+          setIsActiveShapes(false)
+          setIsActiveFirstPen(false)
+          setIsActiveSecondPen(false)
+          setIsActiveThirdPen(false)
+          setIsActiveMarker(false)
+          setIsActiveEraser(false)
+        }}>
           <img src="./icons/undo.svg" alt="" />
         </button>
-        <button onClick={clearCanvasHandler}>
+        <button onClick={()=>{
+          clearCanvasHandler()
+          setIsActiveShapes(false)
+          setIsActiveFirstPen(false)
+          setIsActiveSecondPen(false)
+          setIsActiveThirdPen(false)
+          setIsActiveMarker(false)
+          setIsActiveEraser(false)
+          }}>
           <img src="./icons/refresh.svg" alt="" />
         </button>
 
-        <button onClick={(e)=>setIsHand(true)}>
+        <button onClick={(e)=>{
+          setIsHand(true)
+          setIsActiveShapes(false)
+          setIsActiveFirstPen(false)
+          setIsActiveSecondPen(false)
+          setIsActiveThirdPen(false)
+          setIsActiveMarker(false)
+          setIsActiveEraser(false)
+          }}>
           <img src="./icons/hand.svg" alt="" />
         </button>
         <label htmlFor="inputImg"  className={styles.labelInput}>
@@ -171,12 +268,26 @@ const ToolBar = (props) => {
           onChange={(e)=>{
        
             changeImageHandler(e)
+            setIsActiveShapes(false)
+          setIsActiveFirstPen(false)
+          setIsActiveSecondPen(false)
+          setIsActiveThirdPen(false)
+          setIsActiveMarker(false)
+          setIsActiveEraser(false)
           
           }}
         />
              <button 
              style={{ position:"relative"}}
-             onClick={()=>{setIsActiveBackground(!isActiveBackground)}}
+             onClick={()=>{
+              setIsActiveBackground(!isActiveBackground)
+              setIsActiveShapes(false)
+              setIsActiveFirstPen(false)
+              setIsActiveSecondPen(false)
+              setIsActiveThirdPen(false)
+              setIsActiveMarker(false)
+              setIsActiveEraser(false)
+            }}
              
              >
           <img src="./icons/screen.svg" alt="" />
@@ -200,11 +311,11 @@ const ToolBar = (props) => {
         </button>
 
 
-        <button onClick={()=>{
+        {/* <button onClick={()=>{
           console.log(allIndexOfimages)
         }}>
          Go
-        </button>
+        </button> */}
       
       
       </div>
